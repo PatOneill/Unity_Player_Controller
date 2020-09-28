@@ -1,24 +1,27 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerState {
+public class PlayerState : IStateProxyInput, IStateProxy, IState {
     private APlayerState _CurrentPlayerState;
-    private HashSet<IStateProxy> _ActiveProxies;
-    private readonly ToggleMediator _MediatorToggle;
-    private bool _StateUpdate;
-    public APlayerState CurrentPlayerState { get => _CurrentPlayerState; }
+    private ToggleProxyMediator _MediatorToggleProxy;
+    private HashSet<IDynamicProxy> _ActiveProxies;
+    private readonly IEventManager _EventPlayer;
 
     #region Proxies
     private readonly WalkProxy _ProxyWalk;
     private readonly SprintProxy _ProxySprint;
-    private readonly LookProxy _ProxyLook;
     private readonly FallProxy _ProxyFall;
+    private readonly CrouchProxy _ProxyCrouch;
+    private readonly JumpProxy _ProxyJump;
     #endregion
     #region Get methods for state proxies
-    public WalkProxy ProxyWalk { get => _ProxyWalk; }
-    public SprintProxy ProxySprint { get => _ProxySprint; }
-    public LookProxy ProxyLook { get => _ProxyLook; }
-    public FallProxy ProxyFall { get => _ProxyFall; }
+    public IInputProxyToggle ProxyCrouch() { return _ProxyCrouch; }
+    public IInputProxyToggle ProxySprint() { return _ProxySprint; }
+    public IStateProxyOnOff ProxyWalk() { return _ProxyWalk; }
+    public IStateProxyOnOff ProxyFall() { return _ProxyFall; }
+    public IStateProxyOn ProxyJump() { return _ProxyJump; }
+
+    public IAnalogInputObserver ProxySprintObserver() { return _ProxySprint; }
     #endregion
 
     #region States
@@ -26,77 +29,91 @@ public class PlayerState {
     private readonly WalkState _StateWalk;
     private readonly SprintState _StateSprint;
     private readonly FallState _StateFall;
-    private readonly AirMoveState _StateAirMove;
+    private readonly CrouchState _StateCrouch;
+    private readonly JumpState _StateJump;
+    private readonly CrouchWalkState _StateCrouchWalk;
+    private readonly SlideState _StateSlide;
+    private readonly CrouchJumpState _StateCrouchJump;
+    private readonly CrouchFallState _StateCrouchFall;
+    private readonly AirMoveCrouchFallState _StateAirMoveCrouchFall;
+    private readonly AirMoveCrouchJumpState _StateAirMoveCrouchJump;
+    private readonly AirMoveFallState _StateAirMoveFall;
+    private readonly AirMoveJumpState _StateAirMoveJump;
     #endregion
     #region Get methods for states
-    public IdleState StateIdle { get => _StateIdle; }
-    public WalkState StateWalk { get => _StateWalk; }
-    public SprintState StateSprint { get => _StateSprint; }
-    public FallState StateFall { get => _StateFall; }
-    public AirMoveState StateAirMove { get => _StateAirMove; }
+    public IdleState StateIdle() { return _StateIdle; }
+    public WalkState StateWalk() { return _StateWalk; }
+    public SprintState StateSprint() { return _StateSprint; }
+    public FallState StateFall() { return _StateFall; }
+    public CrouchWalkState StateCrouchWalk() { return _StateCrouchWalk; }
+    public CrouchState StateCrouch() { return _StateCrouch; }
+    public JumpState StateJump() { return _StateJump; }
+    public SlideState StateSlide() { return _StateSlide; }
+    public CrouchJumpState StateCrouchJump() { return _StateCrouchJump; }
+    public CrouchFallState StateCrouchFall() { return _StateCrouchFall; }
+    public AirMoveCrouchFallState StateAirMoveCrouchFall()  { return _StateAirMoveCrouchFall; }
+    public AirMoveCrouchJumpState StateAirMoveCrouchJump() {return _StateAirMoveCrouchJump; }
+    public AirMoveFallState StateAirMoveFall() { return _StateAirMoveFall; }
+    public AirMoveJumpState StateAirMoveJump() { return _StateAirMoveJump; }
     #endregion
-    
-    public PlayerState(PlayerCamera playerCamera ) {
-        _ActiveProxies = new HashSet<IStateProxy>();
+
+    public PlayerState(IEventManager playerEvent) {
+        #region Player State Initialization
         _StateIdle = new IdleState(this);
         _StateWalk = new WalkState(this);
         _StateSprint = new SprintState(this);
         _StateFall = new FallState(this);
-        _StateAirMove = new AirMoveState(this);
+        _StateCrouch = new CrouchState(this);
+        _StateJump = new JumpState(this);
+        _StateCrouchWalk = new CrouchWalkState(this);
+        _StateSlide = new SlideState(this);
+        _StateCrouchJump = new CrouchJumpState(this);
+        _StateCrouchFall = new CrouchFallState(this);
+        _StateAirMoveCrouchFall = new AirMoveCrouchFallState(this);
+        _StateAirMoveCrouchJump = new AirMoveCrouchJumpState(this);
+        _StateAirMoveFall = new AirMoveFallState(this);
+        _StateAirMoveJump = new AirMoveJumpState(this);
+        #endregion
 
+        _ActiveProxies = new HashSet<IDynamicProxy>();
+        _EventPlayer = playerEvent;
         _CurrentPlayerState = _StateIdle;
-        _ProxySprint = new SprintProxy(this);
-        _MediatorToggle = new ToggleMediator(_ProxySprint);
-        _ProxyWalk = new WalkProxy(this, _MediatorToggle);
-        _ProxyLook = new LookProxy(playerCamera);
+
+        #region State Proxy Initialization
+        _MediatorToggleProxy = new ToggleProxyMediator();
+        _ProxySprint = new SprintProxy(this, _MediatorToggleProxy);
+        _ProxyCrouch = new CrouchProxy(this, _MediatorToggleProxy);
+        _MediatorToggleProxy.ProxyCrouch = _ProxyCrouch;
+        _MediatorToggleProxy.ProxySprint = _ProxySprint;
+
+        _ProxyWalk = new WalkProxy(this, _MediatorToggleProxy);
         _ProxyFall = new FallProxy(this);
-
-        _StateUpdate = true;
+        _ProxyJump = new JumpProxy(this, _MediatorToggleProxy);
+        #endregion
     }
 
-    public void AddActiveProxy(IStateProxy activeProxy) {
-        _StateUpdate = true;
+    public APlayerState CurrentPlayerState() {
+        return _CurrentPlayerState;
+    }
+
+    public void AddActiveProxy(IDynamicProxy activeProxy) {
         _ActiveProxies.Add(activeProxy);
+        CheckActiveProxy();
     }
 
-    public void RemoveInactiveProxy(IStateProxy inactiveProxy) {
-        _StateUpdate = true;
+    public void RemoveInactiveProxy(IDynamicProxy inactiveProxy) {
         _ActiveProxies.Remove(inactiveProxy);
+        CheckActiveProxy();
     }
 
-    public void CheckActiveProxy() {
-        if(!_StateUpdate) { return; } //Only enter loop if a state was removed or added recently
-        _StateUpdate = false;
-        foreach (IStateProxy proxy in _ActiveProxies) {
+    private void CheckActiveProxy() {
+        foreach (IDynamicProxy proxy in _ActiveProxies) {
             proxy.SendRequest();
         }
     }
 
     public void ChangeState(APlayerState newState) {
         _CurrentPlayerState = newState;
-    }
-
-    public void Walk() {
-        _CurrentPlayerState.Walk();
-    }
-
-    public void CancelWalk() {
-        _CurrentPlayerState.CancleWalk();
-    }
-
-    public void Sprint() {
-        _CurrentPlayerState.Sprint();
-    }
-
-    public void CancelSprint() {
-        _CurrentPlayerState.CancelSprint();
-    }
-
-    public void Fall() {
-        _CurrentPlayerState.Fall();
-    }
-
-    public void CancelFall() {
-        _CurrentPlayerState.CancelFall();
+        _CurrentPlayerState.ExecuteStateEvent(_EventPlayer);
     }
 }

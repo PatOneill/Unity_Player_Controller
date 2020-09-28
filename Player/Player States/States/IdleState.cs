@@ -1,17 +1,27 @@
-﻿public class IdleState : APlayerState {
-    public IdleState(PlayerState playerState) {
+﻿using UnityEngine;
+
+public class IdleState : APlayerState {
+    public IdleState(IState playerState) {
         StatePlayer = playerState;
     }
 
-    public override void ExecuteStateEvent(PlayerEvent playerEvent) {
+    public override void ExecuteStateEvent(IEventManager playerEvent) {
         playerEvent.IdleEvent();
     }
 
     public override void Walk() {
-        StatePlayer.ChangeState(StatePlayer.StateWalk);
+        StatePlayer.ChangeState(StatePlayer.StateWalk());
     }
 
     public override void Fall() {
-        StatePlayer.ChangeState(StatePlayer.StateFall);
+        StatePlayer.ChangeState(StatePlayer.StateFall());
+    }
+
+    public override void Jump() {
+        StatePlayer.ChangeState(StatePlayer.StateFall());
+    }
+
+    public override void Crouch() {
+        StatePlayer.ChangeState(StatePlayer.StateFall());
     }
 }

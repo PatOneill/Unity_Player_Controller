@@ -1,19 +1,21 @@
-﻿using UnityEngine;
-
-public class FallState : APlayerState {
-    public FallState(PlayerState playerState) {
+﻿public class FallState : APlayerState {
+    public FallState(IState playerState) {
         StatePlayer = playerState;
     }
 
-    public override void ExecuteStateEvent(PlayerEvent playerEvents) {
+    public override void ExecuteStateEvent(IEventManager playerEvents) {
         playerEvents.FallEvent();
     }
 
+    public override void Crouch() {
+        StatePlayer.ChangeState(StatePlayer.StateCrouchFall());
+    }
+
     public override void Walk() {
-        StatePlayer.ChangeState(StatePlayer.StateAirMove);
+        StatePlayer.ChangeState(StatePlayer.StateAirMoveFall());
     }
 
     public override void CancelFall() {
-        StatePlayer.ChangeState(StatePlayer.StateIdle);
+        StatePlayer.ChangeState(StatePlayer.StateIdle());
     }
 }
