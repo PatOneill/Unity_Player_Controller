@@ -18,7 +18,7 @@ public class WalkState : APlayerState {
     }
 
     public override void Fall() {
-        StatePlayer.ChangeState(StatePlayer.StateFall());
+        StatePlayer.ChangeState(StatePlayer.StateAirMoveFall());
     }
 
     public override void Crouch() {

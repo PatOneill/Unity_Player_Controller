@@ -9,7 +9,9 @@ public class PhysicsGrounded {
     private readonly Vector3 _GroundCheckSize;
     private bool _IsGrounded;
 
-    public PhysicsGrounded(PlayerPhysics playerPhysics, Transform playerTransform, LayerMask groundLayer, Vector3 groundCheckSize ) {
+
+
+    public PhysicsGrounded(PlayerPhysics playerPhysics, Transform playerTransform, LayerMask groundLayer, Vector3 groundCheckSize) {
         _ProxyFall = null;
         _PlayerTransform = playerTransform;
         _PhysicsPlayer = playerPhysics;
@@ -17,6 +19,7 @@ public class PhysicsGrounded {
         _GroundLayer = groundLayer;
         _GroundCheckSize = groundCheckSize;
         _IsGrounded = true;
+
     }
 
     public void CheckGround() {
@@ -25,7 +28,7 @@ public class PhysicsGrounded {
             if (_IsGrounded) { return; } //Don't continuously call state controller with repetitive messages that the player is grounded
             _ProxyFall.ProxyOff(); //Player is grounded
 
-            Vector3 resetYVelocity = _PhysicsPlayer.CurrentVelocity; //When the player hits the ground ensure that their y velocity is set to zero again
+            Vector2 resetYVelocity = _PhysicsPlayer.CurrentVelocity; //When the player hits the ground ensure that their y velocity is set to zero again
             resetYVelocity.y = 0.0f;
             _PhysicsPlayer.CurrentVelocity = resetYVelocity;
 

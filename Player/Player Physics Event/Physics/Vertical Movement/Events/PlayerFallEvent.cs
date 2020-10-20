@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerFallEvent : IPlayerEvent {
+public class PlayerFallEvent : IPlayerEvent, IPhysicsComponent {
     private readonly Rigidbody _PlayerRigidbody;
     private readonly Transform _PlayerTransform;
     private readonly PlayerPhysics _PhysicsPlayer;
@@ -20,9 +20,14 @@ public class PlayerFallEvent : IPlayerEvent {
     }
 
     public void ExecutePhysicsEvent() {
-        Vector3 currentVelocity = _PhysicsPlayer.CurrentVelocity;
-        Vector3 currentPosition = _PlayerTransform.position;
+        Vector3 currentPosition = CalculationComponent();
+        _PlayerRigidbody.MovePosition(currentPosition);
+    }
 
+    public Vector3 CalculationComponent() {
+        Vector2 currentVelocity = _PhysicsPlayer.CurrentVelocity;
+        Vector3 currentPosition = _PlayerTransform.position;
+        
         //Calculate displacement 
         currentPosition.y += (currentVelocity.y * Time.deltaTime) + (0.5f * _FallSpeed * Mathf.Pow(Time.deltaTime, 2));
 
@@ -30,7 +35,6 @@ public class PlayerFallEvent : IPlayerEvent {
         currentVelocity.y += (_FallSpeed * Time.deltaTime);
 
         if (currentVelocity.y > _MaxFallSpeed) { _PhysicsPlayer.CurrentVelocity = currentVelocity; } //Prevent the player from fall faster than a specified speed
-
-        _PlayerRigidbody.MovePosition(currentPosition);
+        return currentPosition;
     }
 }

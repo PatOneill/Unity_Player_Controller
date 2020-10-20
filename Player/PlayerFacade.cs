@@ -8,8 +8,8 @@ public class PlayerFacade {
 
     private readonly PhysicsGrounded _GroundCheck;
 
-    public PlayerFacade(Rigidbody playerRigidbody, Camera playerCamera) {
-        _CameraPlayer = new PlayerCamera(playerRigidbody.transform, playerCamera);
+    public PlayerFacade(Rigidbody playerRigidbody, Camera playerCamera, PlayerMain playerMain) {
+        _CameraPlayer = new PlayerCamera(playerRigidbody.transform, playerCamera, playerMain);
         _EventPlayer = new PlayerEvent(playerRigidbody, _CameraPlayer);
         _StatePlayer = new PlayerState(_EventPlayer);
         _InputPlayer = new PlayerInput(_StatePlayer, _EventPlayer, _CameraPlayer);

@@ -16,7 +16,7 @@
     }
 
     public override void Fall() {
-        StatePlayer.ChangeState(StatePlayer.StateFall());
+        StatePlayer.ChangeState(StatePlayer.StateAirMoveFall());
     }
 
     public override void Jump() {
@@ -24,6 +24,6 @@
     }
 
     public override void Crouch() {
-        StatePlayer.ChangeState(StatePlayer.StateSlide());
+        //StatePlayer.ChangeState(StatePlayer.StateSlide());
     }
 }

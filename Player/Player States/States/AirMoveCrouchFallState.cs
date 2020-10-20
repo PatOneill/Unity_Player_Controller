@@ -7,10 +7,6 @@
         playerEvents.AirMoveCrouchFallEvent();
     }
 
-    public override void CancelWalk() {
-        StatePlayer.ChangeState(StatePlayer.StateCrouchFall());
-    }
-
     public override void CancelCrouch() {
         StatePlayer.ChangeState(StatePlayer.StateAirMoveFall());
     }

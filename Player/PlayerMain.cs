@@ -9,7 +9,7 @@ public class PlayerMain : MonoBehaviour {
         _PlayerRigidbody = this.gameObject.GetComponent<Rigidbody>();
         _PlayerCamera = this.gameObject.GetComponentInChildren<Camera>();
 
-        _FacadePlayer = new PlayerFacade(_PlayerRigidbody, _PlayerCamera);
+        _FacadePlayer = new PlayerFacade(_PlayerRigidbody, _PlayerCamera, this);
     }
 
     private void Start() {

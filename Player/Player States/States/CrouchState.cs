@@ -1,4 +1,6 @@
-﻿public class CrouchState : APlayerState {
+﻿using UnityEngine;
+
+public class CrouchState : APlayerState {
     public CrouchState(IState playerState) {
         StatePlayer = playerState;
     }

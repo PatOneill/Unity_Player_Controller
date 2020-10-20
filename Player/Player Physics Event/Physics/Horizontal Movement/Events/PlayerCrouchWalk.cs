@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 
-public class PlayerWalkEvent : AHorizontal, IPlayerEvent {
+public class PlayerCrouchWalk : AHorizontal, IPlayerEvent {
 
-    public PlayerWalkEvent(PlayerPhysics playerPhysics, Rigidbody playerRigidbody) {
+    public PlayerCrouchWalk(PlayerPhysics playerPhysics, Rigidbody playerRigidbody) {
         _PhysicsPlayer = playerPhysics;
         _PlayerRigidbody = playerRigidbody;
         _PlayerTransform = playerRigidbody.transform;
-        _MaxVelocity = 3.0f;
-        _Acceleration = 3.0f;
+        _MaxVelocity = 1.5f;
+        _Acceleration = 1.5f;
     }
 
     public void ExecuteAnimationEvent() {

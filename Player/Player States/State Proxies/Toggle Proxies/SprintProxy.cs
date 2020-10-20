@@ -56,7 +56,6 @@ public class SprintProxy : IInputProxyToggle, IDynamicProxy, IAnalogInputObserve
 
     public void Update(Vector2 direction) {
         _WalkInput = direction; //Keep track of how the player is moving their analog stick for walk event
-        DirectionCheck();
     }
 
     public void ProxyCancelToggle() {
@@ -64,9 +63,5 @@ public class SprintProxy : IInputProxyToggle, IDynamicProxy, IAnalogInputObserve
         _StatePlayer.RemoveInactiveProxy(this); //Remove this proxy from the list of active proxy in PlayerState
         _CommandSprint.ExecuteCommand();
         RetractRequest(); //Cancel this state's impact on the current active state
-    }
-
-    private void DirectionCheck() {
-        
     }
 }

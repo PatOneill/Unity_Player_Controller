@@ -11,6 +11,8 @@
         _CommandCrouch = new CrouchCommand();
     }
 
+    public ICommandToggle GetCommand() { return _CommandCrouch; }
+
     public void CheckActivation() {
         if (_IsInputActive) { //Check to see if proxy can become active
             ActiveProxy(); //Proxy is acitve
@@ -19,8 +21,6 @@
             DeactivateProxy(); //Proxy is inactive 
         }
     }
-
-    public ICommandToggle GetCommand() { return _CommandCrouch; }
 
     public void ProxyOn() {
         _IsInputActive = true;
@@ -38,6 +38,7 @@
 
     public void DeactivateProxy() {
         _StatePlayer.RemoveInactiveProxy(this); //Remove this proxy from the list of active proxy in PlayerState
+        _IsInputActive = false;
         RetractRequest(); //Cancel this state's impact on the current active state
     }
 
@@ -51,7 +52,8 @@
 
     public void ProxyCancelToggle() {
         _IsInputActive = false;
-        CheckActivation(); //Check to see if the proxy can become active/inactive
+        _StatePlayer.RemoveInactiveProxy(this); //Remove this proxy from the list of active proxy in PlayerState
         _CommandCrouch.ExecuteCommand();
+        RetractRequest(); //Cancel this state's impact on the current active state
     }
 }

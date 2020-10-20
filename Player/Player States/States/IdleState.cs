@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class IdleState : APlayerState {
+﻿public class IdleState : APlayerState {
     public IdleState(IState playerState) {
         StatePlayer = playerState;
     }
@@ -22,6 +20,6 @@ public class IdleState : APlayerState {
     }
 
     public override void Crouch() {
-        StatePlayer.ChangeState(StatePlayer.StateFall());
+        StatePlayer.ChangeState(StatePlayer.StateCrouch());
     }
 }

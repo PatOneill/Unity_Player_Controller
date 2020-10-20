@@ -2,7 +2,7 @@
 
 public class PlayerPhysics : IAnalogInputObserver {
     private readonly Transform _PlayerTransform;
-    private Vector3 _AnalogInput;
+    private Vector2 _AnalogInput;
 
     private readonly Vector3 _StandingMoveCheckSize;
     private readonly Vector3 _CrouchingMoveCheckSize;
@@ -10,7 +10,7 @@ public class PlayerPhysics : IAnalogInputObserver {
     private readonly Vector3 _CeilingCheckSize;
     private Vector3 _CurrentMoveCheckSize;
 
-    private Vector3 _CurrentVelocity;
+    private Vector2 _CurrentVelocity;
 
     private LayerMask _HorizontalCollisionLayers;
     private LayerMask _GroundCollisionLayers;
@@ -18,136 +18,188 @@ public class PlayerPhysics : IAnalogInputObserver {
     private LayerMask _CeilingCollisionLayers;
 
     private readonly float _RaycastLenght;
-    private readonly float _MiddleOffset;
+    private readonly float _RaycastCornerLenght;
+    private readonly float _MaxSlopeAngle;
+    private float _MiddleOffset;
     private Collider[] _ColliderHits;
-    private RaycastHit _RaycastHitSlope;
-    private RaycastHit _RaycastHitWall;
+    private RaycastHit _RaycastDirectCollision;
     private Vector3 _HorizontalDirection;
+
+    private Vector3 _NewGroundLocation;
+    private Vector3 _NewGroundDirection;
+
+    private Rigidbody _PlayerRigidbody;
+    private readonly float _GroundOffset;
+    private RaycastHit _RaycastCollision;
+    private readonly float _Time;
 
     private readonly PhysicsGrounded _GroundedPhysics;
 
-    public Vector3 CurrentVelocity { get => _CurrentVelocity; set => _CurrentVelocity = value; }
-    public Vector3 HorizontalDirection { get => _HorizontalDirection.normalized; set => _HorizontalDirection = value; }
-
     public PlayerPhysics(Rigidbody playerRigidbody) {
+        _PlayerRigidbody = playerRigidbody;
         _PlayerTransform = playerRigidbody.transform;
-        _AnalogInput = Vector3.zero;
+        _AnalogInput = Vector2.zero;
 
         _StandingMoveCheckSize = new Vector3(0.25f, 0.4f, 0.25f);
-        _CrouchingMoveCheckSize = new Vector3(0.25f, 0.25f, 0.25f);
-        _GroundCheckSize = new Vector3(0.25f, 0.25f, 0.25f);
+        _CrouchingMoveCheckSize = new Vector3(0.25f, 0.2f, 0.25f);
+        _GroundCheckSize = new Vector3(0.1f, 0.25f, 0.1f);
         _CeilingCheckSize = new Vector3(0.25f, 0.15f, 0.25f);
         _CurrentMoveCheckSize = _StandingMoveCheckSize;
 
         _CurrentVelocity = Vector3.zero;
 
-        _HorizontalCollisionLayers = LayerMask.GetMask("Ground", "Wall");
+        _HorizontalCollisionLayers = LayerMask.GetMask("Wall", "AI");
         _GroundCollisionLayers = LayerMask.GetMask("Ground");
         _WallCollisionLayers = LayerMask.GetMask("Wall");
         _CeilingCollisionLayers = LayerMask.GetMask("Ceiling");
 
         _RaycastLenght = 1.0f;
+        _RaycastCornerLenght = 0.1f;
+        _MaxSlopeAngle = 45.0f;
         _MiddleOffset = 0.5f;
         _ColliderHits = new Collider[] { };
-        _RaycastHitSlope = new RaycastHit();
-        _RaycastHitWall = new RaycastHit();
+        _RaycastDirectCollision = new RaycastHit();
         _HorizontalDirection = Vector3.zero;
+
+        _NewGroundLocation = Vector3.zero;
+        _NewGroundDirection = Vector3.zero;
+
+        _GroundOffset = 0.05f;
+        _RaycastCollision = new RaycastHit();
+        _Time = 0.5f;
 
         _GroundedPhysics = new PhysicsGrounded(this, _PlayerTransform, _GroundCollisionLayers, _GroundCheckSize);
     }
 
+    #region Physic Function Helpers
+    public Vector3 HorizontalDirection() { return _HorizontalDirection; }
+
+    public Vector2 CurrentVelocity { get => _CurrentVelocity; set => _CurrentVelocity = value; }
+
+    public Vector2 AnalogInput { get => _AnalogInput; }
+
     public void SetBodyStanding() {
         _CurrentMoveCheckSize = _StandingMoveCheckSize;
+        _MiddleOffset = 0.5f;
     }
 
     public void SetBodyCrouching() {
         _CurrentMoveCheckSize = _CrouchingMoveCheckSize;
+        _MiddleOffset = 0.25f;
     }
 
     public PhysicsGrounded GetGroundCheck() {
         return _GroundedPhysics;
     }
 
-    public Vector3 CalculateHorizontalDirection() {
-        _HorizontalDirection = ((_PlayerTransform.right * _AnalogInput.x) + (_PlayerTransform.forward * _AnalogInput.y)).normalized; //Determine the direction the player wants to move in
-        return _HorizontalDirection.normalized;
+    public Vector3 CalculateHorizontalDirectionWalk() {
+        _HorizontalDirection = (_PlayerTransform.right * _AnalogInput.x) + (_PlayerTransform.forward * _AnalogInput.y); //Determine the direction the player wants to move in
+        return _HorizontalDirection;
     }
+
+    public Vector3 CalculateHorizontalDirectionSprint() {
+        _HorizontalDirection = (_PlayerTransform.right * _AnalogInput.x) + (_PlayerTransform.forward * _AnalogInput.y); //Determine the direction the player wants to move in
+        return _HorizontalDirection.normalized;  //If sprinting, always move at max sprint speed
+    }
+
+    public Vector3 CalculateHorizontalDirectionMidAir() {
+        Vector3 temp = (_PlayerTransform.right * _AnalogInput.x) + (_PlayerTransform.forward * _AnalogInput.y); //Determine the direction the player wants to move in
+        return temp;
+    }
+    #endregion
 
     #region Horizontal Move Collision Checks
-    public bool Grounded_HorizontalMoveCheck(Vector3 moveToPosition) { //Handles all horizontal checks for movement
-        BarrierCollisionCheck(); //Check to see if the player can move along a object they are colliding with
-        if (HorizontalCollisionChecks(moveToPosition)) { //Check to see if the player is moving into any type of object in the layermask that has a collider
-            if (SlopeCollisionCheck(moveToPosition)) { //Check to see if the player is moving on a collider at an angle
-                _HorizontalDirection = Vector3.ProjectOnPlane(_HorizontalDirection, _RaycastHitSlope.normal);
-                return true; //Getting on a slope at the bottom/moving upwards on a slope
-            } else {
-                if (SlopeCollisionCheck(_PlayerTransform.position)) { //Check to see if the player is standing on a collider at an angle
-                    _HorizontalDirection = Vector3.ProjectOnPlane(_HorizontalDirection, _RaycastHitSlope.normal);
-                    return true; //Getting off a slope at its peak height
-                } else {
-                    return false; //Colliding with a gameobjec they are not allowed to move against
-                }
-            }
-        } else { //Is not colliding with something 
-            if (!GroundCollisionCheck(moveToPosition)) { //Check to see if the player is grounded at the new position
-                if (SlopeCollisionCheck(moveToPosition)) { //Check to see if the player is moving on a collider at an angle
-                    _HorizontalDirection = Vector3.ProjectOnPlane(_HorizontalDirection, _RaycastHitSlope.normal);
-                    return true; //Getting on a slope at the top
-                }else {
-                    return true; //Trying to move in mid air
-                }
-            } else {
-                if (SlopeCollisionCheck(_PlayerTransform.position)) { //Check to see if the player is moving on a collider at an angle
-                    _HorizontalDirection = Vector3.ProjectOnPlane(_HorizontalDirection, _RaycastHitSlope.normal);
-                    return true; //Getting off a slope at the bottom/moving downwards on a slope
-                } else {
-                    return true; //Moving normally
-                }
-            }
-        }
+    public void HorizontalMoveCheck(Vector3 moveToPosition) {
+        MoveBodyCheck(moveToPosition);
+        MoveOnSlopeCheck(moveToPosition);
+        FixedToGround();
     }
-    
-    private bool HorizontalCollisionChecks(Vector3 moveToPosition) {
-        moveToPosition.y += _MiddleOffset;
-        _ColliderHits = Physics.OverlapBox(moveToPosition, _CurrentMoveCheckSize, _PlayerTransform.rotation, _HorizontalCollisionLayers);
-        if (_ColliderHits.Length > 0) { //The area this gameobject wants to move to is colliding with a physics body in the designated layer mask
-            return true;
+
+    public void AerialHorizontalMoveCheck(Vector3 moveToPosition) {
+        MoveBodyCheck(moveToPosition);
+        FixedToGround();
+    }
+
+    private void MoveBodyCheck(Vector3 location) {
+        location.y += _MiddleOffset;
+        _ColliderHits = Physics.OverlapBox(location, _CurrentMoveCheckSize, _PlayerTransform.rotation, _HorizontalCollisionLayers);
+        if (_ColliderHits.Length == 0) {
+            return; //The player is not colliding with some physics object at the desired location
         } else {
-            return false;
+            location = _PlayerTransform.position;
+            location.y += _MiddleOffset;
+            RaycastPlayerDirectionCollision(location, _HorizontalDirection); //Check to see if the player can move along the object they are colliding with
         }
     }
 
-    private void BarrierCollisionCheck() {
-        Vector3 fireFromMiddle = _PlayerTransform.position;
-        fireFromMiddle.y += _MiddleOffset;
-        if (Physics.Raycast(fireFromMiddle, _HorizontalDirection, out _RaycastHitWall, _RaycastLenght, _WallCollisionLayers)) { //Check to see if the player is walking into a wall or other horizontal blockers
-            _HorizontalDirection = Vector3.ProjectOnPlane(_HorizontalDirection, _RaycastHitWall.normal);
+    private void RaycastPlayerDirectionCollision(Vector3 firePostion, Vector3 direction) {
+        if (Physics.Raycast(firePostion, direction, out _RaycastDirectCollision, _RaycastLenght, _HorizontalCollisionLayers)) {
+            _HorizontalDirection = Vector3.ProjectOnPlane(_HorizontalDirection, _RaycastDirectCollision.normal);
+            firePostion = (_RaycastDirectCollision.point + _PlayerTransform.position) / 2.0f;
+            RaycastPlayerIndirectCollisions(firePostion, _HorizontalDirection);
         }
     }
 
-    private bool SlopeCollisionCheck(Vector3 moveToPosition) {
-        moveToPosition.y += _MiddleOffset;
-        if (Physics.Raycast(moveToPosition, -_PlayerTransform.up, out _RaycastHitSlope, _RaycastLenght, _GroundCollisionLayers)) {
-            if(_RaycastHitSlope.normal == Vector3.zero) {
-                return false; //Player is standing on flate ground
+    private void RaycastPlayerIndirectCollisions(Vector3 firePostion, Vector3 direction) {
+        if (Physics.Raycast(firePostion, direction, out _RaycastDirectCollision, _RaycastCornerLenght, _HorizontalCollisionLayers)) {
+            if (_WallCollisionLayers == (_WallCollisionLayers | (1 << _RaycastDirectCollision.transform.gameObject.layer))) {
+                _HorizontalDirection = Vector3.zero;
+            } else {
+                _HorizontalDirection = Vector3.ProjectOnPlane(_HorizontalDirection, _RaycastDirectCollision.normal);
+                firePostion = (_RaycastDirectCollision.point + _PlayerTransform.position) / 2.0f;
+                RaycastPlayerIndirectCollisions(firePostion, _HorizontalDirection);
             }
-            return true;
-        } else {
-            return false;
         }
     }
 
+    private void MoveOnSlopeCheck(Vector3 location) {
+        location.y += _MiddleOffset;
+        if (Physics.Raycast(location, -_PlayerTransform.up, out _RaycastDirectCollision, _RaycastLenght, _GroundCollisionLayers)) {
+            _NewGroundLocation = _RaycastDirectCollision.point;
+            if ((Vector3.Angle(_RaycastDirectCollision.normal, -_HorizontalDirection) - 90.0f) <= _MaxSlopeAngle) { //Is the angle of the slope valid
+                if (_RaycastDirectCollision.normal != Vector3.up) { //The player is getting on a slope, move on a slope, or between slopes
+                    _HorizontalDirection = Vector3.ProjectOnPlane(_HorizontalDirection, _RaycastDirectCollision.normal);
+                }
+            } else {
+                _HorizontalDirection = Vector3.zero;
+            }
+        }
+    }
     #endregion
 
     #region Vertical Move Collision Checks
-    private bool GroundCollisionCheck(Vector3 newPosition) {
-        _ColliderHits = Physics.OverlapBox(newPosition, _GroundCheckSize, _PlayerTransform.rotation, _GroundCollisionLayers);
-        if(_ColliderHits.Length > 0) {
-            return true;
-        } else {
-            return false;
+    private void FixedToGround() { //Force the player to stick to the ground
+        Vector3 fireLocation = _PlayerTransform.position;
+        fireLocation.y += _MiddleOffset;
+        if (Physics.Raycast(fireLocation, -_PlayerTransform.up, out _RaycastCollision, _RaycastLenght, _GroundCollisionLayers)) {
+            if (_RaycastCollision.distance >= (_MiddleOffset + _GroundOffset)) {
+                fireLocation = _PlayerTransform.position;
+                _NewGroundDirection = _NewGroundLocation - fireLocation;
+                _HorizontalDirection.y += _NewGroundDirection.y;
+            } else if (_RaycastCollision.distance <= (_MiddleOffset - _GroundOffset)) {
+                fireLocation = _PlayerTransform.position;
+                _NewGroundDirection = _NewGroundLocation - fireLocation;
+                _HorizontalDirection.y += _NewGroundDirection.y;
+            }
         }
     }
+
+    private void AttractToGround() { //Force the player to stick to the ground
+        Vector3 fireLocation = _PlayerTransform.position;
+        fireLocation.y += _MiddleOffset;
+        if (Physics.Raycast(fireLocation, -_PlayerTransform.up, out _RaycastCollision, _RaycastLenght, _GroundCollisionLayers)) {
+            if (_RaycastCollision.distance >= (_MiddleOffset + _GroundOffset)) {
+                fireLocation = _PlayerTransform.position;
+                fireLocation.y = Mathf.Lerp(_PlayerTransform.position.y, _RaycastCollision.point.y, _Time);
+                _PlayerRigidbody.MovePosition(fireLocation);
+            } else if (_RaycastCollision.distance <= (_MiddleOffset - _GroundOffset)) {
+                fireLocation = _PlayerTransform.position;
+                fireLocation.y = Mathf.Lerp(_PlayerTransform.position.y, _RaycastCollision.point.y, _Time);
+                _PlayerRigidbody.MovePosition(fireLocation);
+            }
+        }
+    }
+
     #endregion
 
     public void Update(Vector2 direction) {

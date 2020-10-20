@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
-public class PlayerIdleEvent : IPlayerEvent {
+public class PlayerCrouchEvent : IPlayerEvent {
     private readonly PlayerPhysics _PhysicsPlayer;
 
-    public PlayerIdleEvent(PlayerPhysics playerPhysics) {
+    public PlayerCrouchEvent(PlayerPhysics playerPhysics) {
         _PhysicsPlayer = playerPhysics;
     }
 
@@ -12,7 +12,6 @@ public class PlayerIdleEvent : IPlayerEvent {
     }
 
     public void ExecutePhysicsEvent() {
-        //The player is standing still, so set horizontal velocity to zero
 
     }
 }

@@ -22,4 +22,8 @@
     public override void Jump() {
         StatePlayer.ChangeState(StatePlayer.StateWalk());
     }
+
+    public override void Fall() {
+        StatePlayer.ChangeState(StatePlayer.StateAirMoveCrouchFall());
+    }
 }
