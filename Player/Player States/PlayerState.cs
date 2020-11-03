@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
 public class PlayerState : IStateProxyInput, IStateProxy, IState {
     private APlayerState _CurrentPlayerState;
     private ToggleProxyMediator _MediatorToggleProxy;
+    private PhysicsProxyMediator _MediatorPhysicsProxy;
     private HashSet<IDynamicProxy> _ActiveProxies;
     private readonly IEventManager _EventPlayer;
 
@@ -20,6 +20,7 @@ public class PlayerState : IStateProxyInput, IStateProxy, IState {
     public IStateProxyOnOff ProxyWalk() { return _ProxyWalk; }
     public IStateProxyOnOff ProxyFall() { return _ProxyFall; }
     public IStateProxyOn ProxyJump() { return _ProxyJump; }
+    public IStateProxyOff ProxyJumpPhysics() { return _ProxyJump; }
 
     public IAnalogInputObserver ProxySprintObserver() { return _ProxySprint; }
     #endregion
@@ -81,14 +82,16 @@ public class PlayerState : IStateProxyInput, IStateProxy, IState {
 
         #region State Proxy Initialization
         _MediatorToggleProxy = new ToggleProxyMediator();
+        _MediatorPhysicsProxy = new PhysicsProxyMediator();
         _ProxySprint = new SprintProxy(this, _MediatorToggleProxy);
         _ProxyCrouch = new CrouchProxy(this, _MediatorToggleProxy);
         _MediatorToggleProxy.ProxyCrouch = _ProxyCrouch;
         _MediatorToggleProxy.ProxySprint = _ProxySprint;
 
         _ProxyWalk = new WalkProxy(this, _MediatorToggleProxy);
-        _ProxyFall = new FallProxy(this);
+        _ProxyFall = new FallProxy(this, _MediatorPhysicsProxy);
         _ProxyJump = new JumpProxy(this, _MediatorToggleProxy);
+        _MediatorPhysicsProxy.ProxyJump = _ProxyJump;
         #endregion
     }
 

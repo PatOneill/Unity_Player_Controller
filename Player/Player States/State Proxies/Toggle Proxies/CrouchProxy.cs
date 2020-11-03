@@ -37,9 +37,9 @@
     }
 
     public void DeactivateProxy() {
-        _StatePlayer.RemoveInactiveProxy(this); //Remove this proxy from the list of active proxy in PlayerState
         _IsInputActive = false;
         RetractRequest(); //Cancel this state's impact on the current active state
+        _StatePlayer.RemoveInactiveProxy(this); //Remove this proxy from the list of active proxy in PlayerState
     }
 
     public void SendRequest() {

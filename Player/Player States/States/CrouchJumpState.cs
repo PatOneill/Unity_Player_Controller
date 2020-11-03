@@ -10,15 +10,6 @@
     public override void CancelJump() {
         StatePlayer.ChangeState(StatePlayer.StateCrouchFall());
     }
-
-    public override void Fall() {
-        StatePlayer.ChangeState(StatePlayer.StateCrouchFall());
-    }
-
-    public override void CancelFall() {
-        StatePlayer.ChangeState(StatePlayer.StateCrouch());
-    }
-
     public override void Walk() {
         StatePlayer.ChangeState(StatePlayer.StateAirMoveCrouchJump());
     }

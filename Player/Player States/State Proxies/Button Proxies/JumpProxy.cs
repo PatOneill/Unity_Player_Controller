@@ -1,4 +1,4 @@
-﻿public class JumpProxy : IStateProxyOn, IDynamicProxy {
+﻿public class JumpProxy : IStateProxyOn, IStateProxyOff, IDynamicProxy {
     private readonly IStateProxy _StatePlayer;
     private readonly IToggleProxyCrouchMediator _CrouchToggleMediator;
     private bool _IsInputActive;
@@ -23,13 +23,18 @@
         CheckActivation(); //Check to see if the proxy can become active/inactive
     }
 
+    public void ProxyOff() {
+        _IsInputActive = false;
+        CheckActivation(); //Check to see if the proxy can become active/inactive
+    }
+
     public void ActiveProxy() {
         _StatePlayer.AddActiveProxy(this); //Add this proxy to the list of active proxy in PlayerState
     }
 
     public void DeactivateProxy() {
-        _StatePlayer.RemoveInactiveProxy(this); //Remove this proxy from the list of active proxy in PlayerState
         RetractRequest(); //Cancel this state's impact on the current active state
+        _StatePlayer.RemoveInactiveProxy(this); //Remove this proxy from the list of active proxy in PlayerState
     }
 
     public void SendRequest() {

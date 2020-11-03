@@ -16,7 +16,7 @@
     }
 
     public override void Jump() {
-        StatePlayer.ChangeState(StatePlayer.StateFall());
+        StatePlayer.ChangeState(StatePlayer.StateJump());
     }
 
     public override void Crouch() {

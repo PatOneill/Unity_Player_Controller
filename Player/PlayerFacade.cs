@@ -16,6 +16,7 @@ public class PlayerFacade {
 
         _GroundCheck = _EventPlayer.PhysicsPlayer().GetGroundCheck();
         _GroundCheck.SetFallProxy(_StatePlayer.ProxyFall());
+        _EventPlayer.PhysicsPlayer().GetCeilingCheck().SetJumpProxy(_StatePlayer.ProxyJumpPhysics());
 
         _InputPlayer.ActivateInputDevice();
     }

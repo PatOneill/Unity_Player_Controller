@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class WalkState : APlayerState {
+﻿public class WalkState : APlayerState {
     public WalkState(IState playerState) {
         StatePlayer = playerState;
     }

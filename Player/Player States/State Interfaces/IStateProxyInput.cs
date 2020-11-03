@@ -5,4 +5,5 @@
     IStateProxyOnOff ProxyWalk();
     IStateProxyOnOff ProxyFall();
     IStateProxyOn ProxyJump();
+    IStateProxyOff ProxyJumpPhysics();
 }

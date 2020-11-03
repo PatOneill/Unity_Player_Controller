@@ -4,7 +4,7 @@
     }
 
     public override void ExecuteStateEvent(IEventManager playerEvents) {
-        throw new System.NotImplementedException();
+        playerEvents.FallCrouchEvent();
     }
 
     public override void CancelFall() {
