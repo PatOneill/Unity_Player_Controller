@@ -1,30 +1,25 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class PlayerMain : MonoBehaviour {
-    private Rigidbody _PlayerRigidbody;
-    private Camera _PlayerCamera;
-    private PlayerFacade _FacadePlayer;
-    [SerializeField] private GameObject _EntirePlayerUI;
+    private PlayerMainFacade _MainFacadePlayer;
 
     private void Awake() {
-        _PlayerRigidbody = this.gameObject.GetComponent<Rigidbody>();
-        _PlayerCamera = this.gameObject.GetComponentInChildren<Camera>();
-        _FacadePlayer = new PlayerFacade(_PlayerRigidbody, _PlayerCamera, this, _EntirePlayerUI.GetComponent<PlayerUIController>());
+        _MainFacadePlayer = new PlayerMainFacade(this.gameObject.GetComponent<Rigidbody>(), this.gameObject.GetComponentInChildren<Camera>());
     }
 
     private void Start() {
-        return;
+        _MainFacadePlayer.FacadeStart();
     }
 
     private void FixedUpdate() {
-        _FacadePlayer.FacadeFixedUpdate();
+        _MainFacadePlayer.FacadeFixedUpdate();
     }
 
     private void Update() {
-        _FacadePlayer.FacadeUpdate();
+        _MainFacadePlayer.FacadeUpdate();
     }
 
     private void LateUpdate() {
-        _FacadePlayer.FacadeLastUpdate();
+        _MainFacadePlayer.FacadeLateUpdate();
     }
 }
