@@ -6,7 +6,7 @@ public class Stat_Sprint {
     public float GetSprintAcceleration() { return _SprintAcceleration; }
 
     public Stat_Sprint(Stats_Agility agilityStats) {
-        _SprintAcceleration = 2.0f;
+        _SprintAcceleration = 6.0f;
         _SprintStaminaCost = 0.1f;
         _AgilityStats = agilityStats;
     }

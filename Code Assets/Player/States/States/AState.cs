@@ -18,4 +18,12 @@ public abstract class AState {
     public virtual void CancelSprint() {
         return;
     }
+
+    public virtual void Crouch() {
+        return;
+    }
+
+    public virtual void CancelCrouch() {
+        return;
+    }
 }

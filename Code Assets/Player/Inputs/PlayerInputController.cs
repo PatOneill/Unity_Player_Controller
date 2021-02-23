@@ -8,10 +8,10 @@ public class PlayerInputController {
     private Input_BButton _InputEventBButton;
     private Input_XButton _InputEventXButton;
 
-    public PlayerInputController(PlayerStateController playerProxies, PlayerEventController playerEvents, PlayerCameraController cameraController) {
+    public PlayerInputController(PlayerStateController playerProxies, PlayerPhysicsController physicsController, PlayerCameraController cameraController) {
         _InputDeviceController = new PlayerInputDeviceController();
         InitializeInputEvent(playerProxies, cameraController);
-        SetupObservers(playerEvents, cameraController);
+        SetupObservers(physicsController, cameraController);
     }
 
     private void InitializeInputEvent(PlayerStateController playerProxies, PlayerCameraController cameraController) {
@@ -23,7 +23,7 @@ public class PlayerInputController {
         _InputEventRightAnalog = new Input_RightAnalog(cameraController.GetLookProxy()); 
         _InputEventLeftAnalog = new Input_LeftAnalog(playerProxies.GetWalkProxy(), playerProxies.GetSprintProxy());
         _InputEventAButton = new Input_AButton();
-        _InputEventBButton = new Input_BButton();
+        _InputEventBButton = new Input_BButton(playerProxies.GetCrouchProxy());
         _InputEventXButton = new Input_XButton();
 
         //Walk input events
@@ -53,14 +53,13 @@ public class PlayerInputController {
         _InputDeviceController.Gameplay.Interact.canceled += ctx => _InputEventXButton.GamePlay_InputEnd();
     }
 
-    private void SetupObservers(PlayerEventController playerEvents, PlayerCameraController cameraController) {
+    private void SetupObservers(PlayerPhysicsController physicsController, PlayerCameraController cameraController) {
         /**
           * @desc Setup up all observer objects with an observable input class so observers can be informed of input changes as they happen
           * @parm PlayerEventController $playerEvents - Holds physics events that are observers that require input observable classes
           * @parm PlayerCameraController $cameraController - Holds the camera event that will observer the required input observable class 
         */
-        _InputEventLeftAnalog.GetLeftAnalogObservable().AddObserver(playerEvents.WalkEvent.GetWalkPhysicsEvent());
-        _InputEventLeftAnalog.GetLeftAnalogObservable().AddObserver(playerEvents.SprintEvent.GetSprintPhysicsEvent());
+        _InputEventLeftAnalog.GetLeftAnalogObservable().AddObserver(physicsController);
         _InputEventRightAnalog.GetRightAnalogObservable().AddObserver(cameraController);
     }
 

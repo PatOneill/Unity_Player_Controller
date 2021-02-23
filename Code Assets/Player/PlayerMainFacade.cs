@@ -14,7 +14,7 @@ public class PlayerMainFacade {
         _PhysicsControllerPlayer = new PlayerPhysicsController(playerPhysicsBody);
         _EventControllerPlayer = new PlayerEventController(_StatsControllerPlayer, _PhysicsControllerPlayer);
         _StateControllerPlayer = new PlayerStateController(_EventControllerPlayer, _StatsControllerPlayer);
-        _InputControllerPlayer = new PlayerInputController(_StateControllerPlayer, _EventControllerPlayer, _CameraControllerPlayer);
+        _InputControllerPlayer = new PlayerInputController(_StateControllerPlayer, _PhysicsControllerPlayer, _CameraControllerPlayer);
         _InputControllerPlayer.StartGamePlayInuptController(); //Initialize input capture for gameplay as soon as the player spawns in the level
     }
 

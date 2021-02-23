@@ -1,16 +1,18 @@
 public class Proxy_Sprint : IDynamicProxies, IInputProxies, IProxyDependent {
     private PlayerStateController _StateController;
+    private Mediator_Proxies _ProxyMediator;
     private Stat_Sprint _SprintStat;
     private bool _InputActive;
     private bool _IsToggled;
     private bool _ToggleProxyActive;
 
-    public Proxy_Sprint(PlayerStateController stateController, Stat_Sprint sprintStat) {
+    public Proxy_Sprint(PlayerStateController stateController, Mediator_Proxies proxyMediator, Stat_Sprint sprintStat) {
         _StateController = stateController;
+        _ProxyMediator = proxyMediator;
+        _SprintStat = sprintStat;
         _InputActive = false;
         _IsToggled = true;
         _ToggleProxyActive = false;
-        _SprintStat = sprintStat;
     }
 
     public void InputActive() {
@@ -42,7 +44,7 @@ public class Proxy_Sprint : IDynamicProxies, IInputProxies, IProxyDependent {
             } else {
                 RetractRequest();
             }
-        } else { //If player has set spint to press and hold, handle press and hold event
+        } else { //If player has set spint to press and hold, handle sprint press and hold event
             if (_InputActive && _SprintStat.CheckStaminaCostSprint()) {
                 SendRequest();
             } else {
@@ -62,7 +64,17 @@ public class Proxy_Sprint : IDynamicProxies, IInputProxies, IProxyDependent {
         /**
           * @desc Tell the current state that it should transition out of a sprinting state if such a path existed in the state machine 
         */
+        _ProxyMediator.KillCrouchProxy();  //Send a cancel request to the crouch proxy when the player wants to start sprinting
         _StateController.GetActiveState().CancelSprint();
+    }
+
+    public void ExternalProxyKill() {
+        /**
+          * @desc The sprint proxy is a proxy that depends on the continuous activation of other proxies, if said proxies are turned inactive, sprint proxy most become inactive as well
+        */
+        if (_ToggleProxyActive) { //Check to see if the user is toggle sprinting before setting the proxy to be inactive
+            _ToggleProxyActive = false;
+        }
     }
 
     public void EnableToggleToSprint() {
@@ -78,14 +90,5 @@ public class Proxy_Sprint : IDynamicProxies, IInputProxies, IProxyDependent {
         */
         _IsToggled = false;
         _ToggleProxyActive = false; //If the player disables toggle to sprint while actively sprinting, set _ToggleProxyActive to false to ensure first sprint active always causes the player to sprint if toggle to sprint is re-enabled
-    }
-
-    public void ExternalProxyKill() {
-        /**
-          * @desc The sprint proxy is a proxy that depends on the continuous activation of other proxies, if said proxies are turned inactive, sprint proxy most become inactive as well
-        */
-        if (_ToggleProxyActive) { //Check to see if the user is toggle sprinting before setting the proxy to be inactive
-            _ToggleProxyActive = false;
-        }
     }
 }

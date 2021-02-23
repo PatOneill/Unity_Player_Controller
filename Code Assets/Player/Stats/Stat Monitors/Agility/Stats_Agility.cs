@@ -7,10 +7,12 @@ public class Stats_Agility {
     private float _StaminaRecoveryTime;
     private float _StaminaLastUsed;
     private Stat_Walk _WalkStat;
-    private Stat_Sprint _SprintState;
+    private Stat_Sprint _SprintStat;
+    private Stat_CrouchWalk _CrouchWalkStat;
 
     public Stat_Walk GetWalkStat() { return _WalkStat; }
-    public Stat_Sprint GetSprintState() { return _SprintState; }
+    public Stat_Sprint GetSprintStat() { return _SprintStat; }
+    public Stat_CrouchWalk GetCrouchWalkStat() { return _CrouchWalkStat; }
 
     public Stats_Agility() {
         _CurrentStamina = 100.0f;
@@ -19,7 +21,8 @@ public class Stats_Agility {
         _StaminaRecoveryTime = 0.5f;
         _StaminaLastUsed = 0.5f;
         _WalkStat = new Stat_Walk();
-        _SprintState = new Stat_Sprint(this);
+        _SprintStat = new Stat_Sprint(this);
+        _CrouchWalkStat = new Stat_CrouchWalk();
     }
 
     public bool IsThereEnoughStamina(float cost) {

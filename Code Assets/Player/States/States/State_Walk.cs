@@ -15,4 +15,8 @@ public class State_Walk : AState {
     public override void Sprint() {
         _StateController.ChangeState(_StateController.GetSprintState());
     }
+
+    public override void Crouch() {
+        _StateController.ChangeState(_StateController.GetCrouchWalk());
+    }
 }

@@ -4,11 +4,9 @@ public class Event_Sprint : IEvent {
     private PEvent_Sprint _SprintPhysicsEvent;
     private Stat_Sprint _SprintStat;
 
-    public PEvent_Sprint GetSprintPhysicsEvent() { return _SprintPhysicsEvent; }
-
     public Event_Sprint(PlayerStatsController statsController, PlayerPhysicsController playerPhysicsController) {
         _SprintPhysicsEvent = new PEvent_Sprint(playerPhysicsController);
-        _SprintStat = statsController.GetAgilityStats().GetSprintState();
+        _SprintStat = statsController.GetAgilityStats().GetSprintStat();
     }
 
     public void ExecuteEvent() {

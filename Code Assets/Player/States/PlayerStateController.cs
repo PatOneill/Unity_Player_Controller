@@ -6,18 +6,24 @@ public class PlayerStateController {
     private State_Idle _IdleState;
     private State_Walk _WalkState;
     private State_Sprint _SprintState;
+    private State_Crouch _CrouchState;
+    private State_CrouchWalk _CrouchWalkState;
     #region Gets for all states
     public State_Idle GetIdleState() { return _IdleState; }
     public State_Walk GetWalkState() { return _WalkState; }
     public State_Sprint GetSprintState() { return _SprintState; }
+    public State_Crouch GetCrouchState() { return _CrouchState; }
+    public State_CrouchWalk GetCrouchWalk() { return _CrouchWalkState; }
     #endregion
     #endregion
     #region Declaring all proxies variables 
     private Proxy_Walk _WalkProxy;
     private Proxy_Sprint _SprintProxy;
+    private Proxy_Crouch _CrouchProxy;
     #region Gets for all proxies
     public Proxy_Walk GetWalkProxy() { return _WalkProxy; }
     public Proxy_Sprint GetSprintProxy() { return _SprintProxy; }
+    public Proxy_Crouch GetCrouchProxy() { return _CrouchProxy; }
     #endregion
     #endregion
 
@@ -27,6 +33,7 @@ public class PlayerStateController {
         InitializeStates();
         InitializeProxy(statsController);
         _ProxyMediator.SetSprintProxy(_SprintProxy);
+        _ProxyMediator.SetCrouchProxy(_CrouchProxy);
         _CurrentActiveState = _IdleState; //Whenever the player is initialized for the first time, start them in the idle state
     }
 
@@ -37,6 +44,8 @@ public class PlayerStateController {
         _IdleState = new State_Idle(this);
         _WalkState = new State_Walk(this);
         _SprintState = new State_Sprint(this);
+        _CrouchState = new State_Crouch(this);
+        _CrouchWalkState = new State_CrouchWalk(this);
     }
 
     private void InitializeProxy(PlayerStatsController statsController) {
@@ -44,7 +53,8 @@ public class PlayerStateController {
          * @desc Initialize all the player's proxies
         */
         _WalkProxy = new Proxy_Walk(this, _ProxyMediator);
-        _SprintProxy = new Proxy_Sprint(this, statsController.GetAgilityStats().GetSprintState());
+        _SprintProxy = new Proxy_Sprint(this, _ProxyMediator, statsController.GetAgilityStats().GetSprintStat());
+        _CrouchProxy = new Proxy_Crouch(this);
     }
 
     public AState GetActiveState() {

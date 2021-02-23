@@ -1,6 +1,7 @@
-public class PEvent_Idle {
+public class PEvent_Crouch {
     private PlayerPhysicsController _PhysicsControllerPlayer;
-    public PEvent_Idle(PlayerPhysicsController playerPhysicsController) {
+
+    public PEvent_Crouch(PlayerPhysicsController playerPhysicsController) {
         _PhysicsControllerPlayer = playerPhysicsController;
     }
 

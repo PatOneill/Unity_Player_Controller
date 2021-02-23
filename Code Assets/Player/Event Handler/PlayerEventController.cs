@@ -5,10 +5,9 @@ public class PlayerEventController {
     private Event_Idle _IdleEvent;
     private Event_Walk _WalkEvent;
     private Event_Sprint _SprintEvent;
+    private Event_Crouch _CrouchEvent;
+    private Event_CrouchWalk _CrouchWalkeEvent;
     #endregion
-
-    public Event_Walk WalkEvent { get => _WalkEvent; }
-    public Event_Sprint SprintEvent { get => _SprintEvent; }
 
     public PlayerEventController(PlayerStatsController statsController, PlayerPhysicsController physicsController) {
         InitializeEvents(statsController, physicsController);
@@ -22,6 +21,8 @@ public class PlayerEventController {
         _IdleEvent = new Event_Idle(physicsController);
         _WalkEvent = new Event_Walk(statsController, physicsController);
         _SprintEvent = new Event_Sprint(statsController, physicsController);
+        _CrouchEvent = new Event_Crouch(physicsController);
+        _CrouchWalkeEvent = new Event_CrouchWalk(statsController, physicsController);
     }
 
     public void ExecuteCurrentEvent() {
@@ -42,6 +43,14 @@ public class PlayerEventController {
 
     public void TransitionToSprintEvent() {
         _CurrentEvent = _SprintEvent;
+    }
+
+    public void TransitionToCrouchEvent() {
+        _CurrentEvent = _CrouchEvent;
+    }
+
+    public void TransitionToCrouchWalkEvent() {
+        _CurrentEvent = _CrouchWalkeEvent;
     }
     #endregion
 }
