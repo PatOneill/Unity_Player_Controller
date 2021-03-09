@@ -4,6 +4,6 @@ public class Stat_Walk {
     public float GetWalkAcceleration() { return _WalkAcceleration; }
 
     public Stat_Walk() {
-        _WalkAcceleration = 3.0f;
+        _WalkAcceleration = 1.0f;
     }
 }

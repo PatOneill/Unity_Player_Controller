@@ -5,7 +5,7 @@ public class State_Walk : AState {
     }
 
     public override void ExecuteStateEvent(PlayerEventController eventController) {
-        eventController.TransitionToWalkEvent();
+        eventController.TransitionToNewEvent(eventController.GetWalkEvent());
     }
 
     public override void CancelWalk() {

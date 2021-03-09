@@ -7,32 +7,35 @@ public class PlayerMainFacade {
     private PlayerStatsController _StatsControllerPlayer;
     private PlayerPhysicsController _PhysicsControllerPlayer;
     private PlayerCameraController _CameraControllerPlayer;
+    private PlayerAnimationController _AnimationControllerPlayer;
+    private PlayerUIController _UIControllerPlayer;
+    
 
-    public PlayerMainFacade(Rigidbody playerPhysicsBody, Camera playerCamera) {
-        _StatsControllerPlayer = new PlayerStatsController();
+    public PlayerMainFacade(Rigidbody playerPhysicsBody, Animator playerAnimator, Camera playerCamera, UnityUIController unityUI) {
+        _UIControllerPlayer = new PlayerUIController(unityUI);
+        _StatsControllerPlayer = new PlayerStatsController(_UIControllerPlayer);
         _CameraControllerPlayer = new PlayerCameraController(playerCamera, playerPhysicsBody);
         _PhysicsControllerPlayer = new PlayerPhysicsController(playerPhysicsBody);
-        _EventControllerPlayer = new PlayerEventController(_StatsControllerPlayer, _PhysicsControllerPlayer);
+        _AnimationControllerPlayer = new PlayerAnimationController(playerAnimator, _PhysicsControllerPlayer);
+        _EventControllerPlayer = new PlayerEventController(_StatsControllerPlayer, _PhysicsControllerPlayer, _AnimationControllerPlayer);
         _StateControllerPlayer = new PlayerStateController(_EventControllerPlayer, _StatsControllerPlayer);
         _InputControllerPlayer = new PlayerInputController(_StateControllerPlayer, _PhysicsControllerPlayer, _CameraControllerPlayer);
         _InputControllerPlayer.StartGamePlayInuptController(); //Initialize input capture for gameplay as soon as the player spawns in the level
     }
 
     public void FacadeStart() {
-        return;
+        _UIControllerPlayer.SetUIElements();
     }
 
     public void FacadeFixedUpdate() {
-        _CameraControllerPlayer.InputDrivenPlayerCameraMotion();
         _EventControllerPlayer.ExecuteCurrentEvent();
-        _StatsControllerPlayer.AutoStatRecovery(); 
     }
 
     public void FacadeUpdate() {
-        return;
+        _StatsControllerPlayer.AutoStatRecovery();
     }
 
     public void FacadeLateUpdate() {
-        return;
+        _CameraControllerPlayer.InputDrivenPlayerCameraMotion();
     }
 }

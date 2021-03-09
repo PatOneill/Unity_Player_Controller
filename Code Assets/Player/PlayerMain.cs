@@ -4,7 +4,7 @@ public class PlayerMain : MonoBehaviour {
     private PlayerMainFacade _MainFacadePlayer;
 
     private void Awake() {
-        _MainFacadePlayer = new PlayerMainFacade(this.gameObject.GetComponent<Rigidbody>(), this.gameObject.GetComponentInChildren<Camera>());
+        _MainFacadePlayer = new PlayerMainFacade(this.gameObject.GetComponent<Rigidbody>(), this.gameObject.GetComponent<Animator>(), this.gameObject.GetComponentInChildren<Camera>(), this.gameObject.GetComponentInChildren<UnityUIController>());
     }
 
     private void Start() {

@@ -4,7 +4,7 @@ public class State_Sprint : AState{
     }
 
     public override void ExecuteStateEvent(PlayerEventController eventController) {
-        eventController.TransitionToSprintEvent();
+        eventController.TransitionToNewEvent(eventController.GetSprintEvent());
     }
 
     public override void CancelSprint() {

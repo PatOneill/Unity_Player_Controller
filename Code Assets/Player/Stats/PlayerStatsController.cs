@@ -1,10 +1,12 @@
 public class PlayerStatsController {
     private Stats_Agility _AgilityStats;
+    private Stats_Vitality _VitalityStats;
 
     public Stats_Agility GetAgilityStats() { return _AgilityStats; }
 
-    public PlayerStatsController() {
-        _AgilityStats = new Stats_Agility();
+    public PlayerStatsController(PlayerUIController uiController) {
+        _AgilityStats = new Stats_Agility(uiController.GetHudControllerPlayer());
+        _VitalityStats = new Stats_Vitality(uiController.GetHudControllerPlayer());
     }
 
     public void AutoStatRecovery() {

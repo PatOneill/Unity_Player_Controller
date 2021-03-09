@@ -1,3 +1,5 @@
 public interface IEvent {
-    void ExecuteEvent();
+    void CurrentEventPhysics();
+    void CurrentEventAnimationStart();
+    void CurrentEventAnimationStop();
 }

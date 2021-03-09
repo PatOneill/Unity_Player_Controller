@@ -11,6 +11,10 @@ public class PlayerPhysicsController : IInputObserver {
         _PlayerMoveDirection = Vector3.zero;
     }
 
+    public Vector3 GetPlayerMoveDirection() {
+        return _PlayerMoveDirection;
+    }
+
     public void FullyStopMotion() {
         /**
          * @desc Instantly cancel out the player's velocity in all directions forcing the rigidbody to come to a complete stop in a single frame
@@ -25,8 +29,6 @@ public class PlayerPhysicsController : IInputObserver {
         */
         Vector3 accelerationDirection = _PlayerMoveDirection * acceleration;
         Vector3 movePosition = ((accelerationDirection.x * _PlayerRigidbodyTransform.right) + (accelerationDirection.z * _PlayerRigidbodyTransform.forward)) * Time.deltaTime; //Calculate the position the player wants to move to
-        //Check for collision events here
-        //Solve collision events here
         _PlayerRigidbody.MovePosition(movePosition + _PlayerRigidbodyTransform.position); //Move the player's kinematic rigidbody
     }
 

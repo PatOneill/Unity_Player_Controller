@@ -5,24 +5,26 @@ public class Stats_Agility {
     private float _MaxStamina;
     private float _StaminaRecoveryAmount;
     private float _StaminaRecoveryTime;
-    private float _StaminaLastUsed;
+    private float _TimeSinceLastDecreaseInStamina;
     private Stat_Walk _WalkStat;
     private Stat_Sprint _SprintStat;
     private Stat_CrouchWalk _CrouchWalkStat;
+    private PlayerHUDController _HUDControllerPlayer;
 
     public Stat_Walk GetWalkStat() { return _WalkStat; }
     public Stat_Sprint GetSprintStat() { return _SprintStat; }
     public Stat_CrouchWalk GetCrouchWalkStat() { return _CrouchWalkStat; }
 
-    public Stats_Agility() {
+    public Stats_Agility(PlayerHUDController hudController) {
         _CurrentStamina = 100.0f;
         _MaxStamina = 100.0f;
-        _StaminaRecoveryAmount = 1.0f;
-        _StaminaRecoveryTime = 0.5f;
-        _StaminaLastUsed = 0.5f;
+        _StaminaRecoveryAmount = 0.05f;
+        _StaminaRecoveryTime = 8.0f;
+        _TimeSinceLastDecreaseInStamina = 0.0f;
         _WalkStat = new Stat_Walk();
         _SprintStat = new Stat_Sprint(this);
         _CrouchWalkStat = new Stat_CrouchWalk();
+        _HUDControllerPlayer = hudController;
     }
 
     public bool IsThereEnoughStamina(float cost) {
@@ -43,18 +45,27 @@ public class Stats_Agility {
          * @parm float $decayValue - The cost in stamina for a particular action
         */
         _CurrentStamina -= decayValue;
-        _StaminaLastUsed = 0.0f; //Everytime the player performs an action that causes the total stamina to fall, reset the recover time for stamina
+        _HUDControllerPlayer.StaminaWasIncreased(_CurrentStamina / _MaxStamina); //Inform the player's HUD that it needs to update the stamina bar
+        _TimeSinceLastDecreaseInStamina = 0.0f; //Everytime the player performs an action that causes the total stamina to fall, reset the recover time for stamina
     }
 
     public void StaminaRecoverOverTime() {
         /**
          * @desc Continuously check to see when the player's stamina should start auto refilling as time passes without the player using their stamina
         */
-        if (_StaminaLastUsed < _StaminaRecoveryTime) {
-            _StaminaLastUsed += Time.deltaTime;
+        if(_CurrentStamina == _MaxStamina) { //Skip recover clock if player already has max stamina
+            return;
         } else {
-            if(_CurrentStamina < _MaxStamina) {
-                _CurrentStamina += _StaminaRecoveryAmount;
+            if (_TimeSinceLastDecreaseInStamina < _StaminaRecoveryTime) {
+                _TimeSinceLastDecreaseInStamina += Time.deltaTime;
+            } else {
+                if (_CurrentStamina < _MaxStamina) {
+                    _CurrentStamina += _StaminaRecoveryAmount;
+                    if (_CurrentStamina > _MaxStamina) { //Ensure the player's stamina does not recover more stamina than the max amount
+                        _CurrentStamina = _MaxStamina;
+                    }
+                    _HUDControllerPlayer.StaminaWasDecreased(_CurrentStamina/_MaxStamina); //Inform the player's HUD that it needs to update the stamina bar
+                }
             }
         }
     }

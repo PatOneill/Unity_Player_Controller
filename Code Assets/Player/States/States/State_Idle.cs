@@ -4,7 +4,7 @@ public class State_Idle : AState {
     }
 
     public override void ExecuteStateEvent(PlayerEventController eventController) {
-        eventController.TransitionToIdleEvent();
+        eventController.TransitionToNewEvent(eventController.GetIdleEvent());
     }
 
     public override void Walk() {

@@ -4,7 +4,7 @@ public class State_CrouchWalk : AState {
     }
 
     public override void ExecuteStateEvent(PlayerEventController eventController) {
-        eventController.TransitionToCrouchWalkEvent();
+        eventController.TransitionToNewEvent(eventController.GetCrouchEvent());
     }
 
     public override void CancelCrouch() {

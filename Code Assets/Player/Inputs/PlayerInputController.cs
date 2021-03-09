@@ -17,8 +17,6 @@ public class PlayerInputController {
     private void InitializeInputEvent(PlayerStateController playerProxies, PlayerCameraController cameraController) {
         /**
           * @desc Initialize the input events and assign them to the _InputDeviceController so that once an button/analog is updated the appropriate funtions are called
-          * @parm PlayerStateController $playerProxies - Used to initialize each input class with a corresponding proxy 
-          * @parm PlayerCameraController $cameraController - Used to initialize the look input class with the corresponding look proxy
         */
         _InputEventRightAnalog = new Input_RightAnalog(cameraController.GetLookProxy()); 
         _InputEventLeftAnalog = new Input_LeftAnalog(playerProxies.GetWalkProxy(), playerProxies.GetSprintProxy());
