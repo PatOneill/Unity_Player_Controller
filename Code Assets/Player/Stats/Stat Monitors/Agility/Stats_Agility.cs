@@ -9,13 +9,13 @@ public class Stats_Agility {
     private Stat_Walk _WalkStat;
     private Stat_Sprint _SprintStat;
     private Stat_CrouchWalk _CrouchWalkStat;
-    private PlayerHUDController _HUDControllerPlayer;
+    private PlayerHUDUI _HUDUIPlayer;
 
     public Stat_Walk GetWalkStat() { return _WalkStat; }
     public Stat_Sprint GetSprintStat() { return _SprintStat; }
     public Stat_CrouchWalk GetCrouchWalkStat() { return _CrouchWalkStat; }
 
-    public Stats_Agility(PlayerHUDController hudController) {
+    public Stats_Agility(PlayerHUDUI hudController) {
         _CurrentStamina = 100.0f;
         _MaxStamina = 100.0f;
         _StaminaRecoveryAmount = 0.05f;
@@ -24,7 +24,7 @@ public class Stats_Agility {
         _WalkStat = new Stat_Walk();
         _SprintStat = new Stat_Sprint(this);
         _CrouchWalkStat = new Stat_CrouchWalk();
-        _HUDControllerPlayer = hudController;
+        _HUDUIPlayer = hudController;
     }
 
     public bool IsThereEnoughStamina(float cost) {
@@ -45,7 +45,7 @@ public class Stats_Agility {
          * @parm float $decayValue - The cost in stamina for a particular action
         */
         _CurrentStamina -= decayValue;
-        _HUDControllerPlayer.StaminaWasIncreased(_CurrentStamina / _MaxStamina); //Inform the player's HUD that it needs to update the stamina bar
+        _HUDUIPlayer.StaminaWasIncreased(_CurrentStamina / _MaxStamina); //Inform the player's HUD that it needs to update the stamina bar
         _TimeSinceLastDecreaseInStamina = 0.0f; //Everytime the player performs an action that causes the total stamina to fall, reset the recover time for stamina
     }
 
@@ -57,14 +57,14 @@ public class Stats_Agility {
             return;
         } else {
             if (_TimeSinceLastDecreaseInStamina < _StaminaRecoveryTime) {
-                _TimeSinceLastDecreaseInStamina += Time.deltaTime;
+                _TimeSinceLastDecreaseInStamina += Time.fixedDeltaTime;
             } else {
                 if (_CurrentStamina < _MaxStamina) {
                     _CurrentStamina += _StaminaRecoveryAmount;
                     if (_CurrentStamina > _MaxStamina) { //Ensure the player's stamina does not recover more stamina than the max amount
                         _CurrentStamina = _MaxStamina;
                     }
-                    _HUDControllerPlayer.StaminaWasDecreased(_CurrentStamina/_MaxStamina); //Inform the player's HUD that it needs to update the stamina bar
+                    _HUDUIPlayer.StaminaWasDecreased(_CurrentStamina/_MaxStamina); //Inform the player's HUD that it needs to update the stamina bar
                 }
             }
         }

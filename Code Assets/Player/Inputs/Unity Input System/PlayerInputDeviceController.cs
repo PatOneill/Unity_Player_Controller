@@ -65,6 +65,14 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Game Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""1acc2e1f-57ad-475c-b1a6-d210ed6a82cb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -133,6 +141,17 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fd42aeba-85bd-4e2f-bd20-986627b7ee95"",
+                    ""path"": ""<XInputController>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Game Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -168,6 +187,14 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
                     ""name"": ""Right"",
                     ""type"": ""Button"",
                     ""id"": ""f727b382-ae92-484e-83ac-1b48ebe89589"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Exit Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""f7573c47-aac2-4155-99ad-1e09b1be56d1"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -217,6 +244,17 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
                     ""action"": ""Right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9c1d62c6-d94c-4f62-896f-5ef2c9701b2c"",
+                    ""path"": ""<XInputController>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -231,12 +269,14 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
         m_Gameplay_Crouch = m_Gameplay.FindAction("Crouch", throwIfNotFound: true);
         m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
+        m_Gameplay_GameMenu = m_Gameplay.FindAction("Game Menu", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_Up = m_Menu.FindAction("Up", throwIfNotFound: true);
         m_Menu_Down = m_Menu.FindAction("Down", throwIfNotFound: true);
         m_Menu_Left = m_Menu.FindAction("Left", throwIfNotFound: true);
         m_Menu_Right = m_Menu.FindAction("Right", throwIfNotFound: true);
+        m_Menu_ExitMenu = m_Menu.FindAction("Exit Menu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -292,6 +332,7 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
     private readonly InputAction m_Gameplay_Jump;
     private readonly InputAction m_Gameplay_Crouch;
     private readonly InputAction m_Gameplay_Interact;
+    private readonly InputAction m_Gameplay_GameMenu;
     public struct GameplayActions
     {
         private @PlayerInputDeviceController m_Wrapper;
@@ -302,6 +343,7 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
         public InputAction @Crouch => m_Wrapper.m_Gameplay_Crouch;
         public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
+        public InputAction @GameMenu => m_Wrapper.m_Gameplay_GameMenu;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -329,6 +371,9 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
                 @Interact.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
+                @GameMenu.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnGameMenu;
+                @GameMenu.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnGameMenu;
+                @GameMenu.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnGameMenu;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -351,6 +396,9 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
+                @GameMenu.started += instance.OnGameMenu;
+                @GameMenu.performed += instance.OnGameMenu;
+                @GameMenu.canceled += instance.OnGameMenu;
             }
         }
     }
@@ -363,6 +411,7 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
     private readonly InputAction m_Menu_Down;
     private readonly InputAction m_Menu_Left;
     private readonly InputAction m_Menu_Right;
+    private readonly InputAction m_Menu_ExitMenu;
     public struct MenuActions
     {
         private @PlayerInputDeviceController m_Wrapper;
@@ -371,6 +420,7 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
         public InputAction @Down => m_Wrapper.m_Menu_Down;
         public InputAction @Left => m_Wrapper.m_Menu_Left;
         public InputAction @Right => m_Wrapper.m_Menu_Right;
+        public InputAction @ExitMenu => m_Wrapper.m_Menu_ExitMenu;
         public InputActionMap Get() { return m_Wrapper.m_Menu; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -392,6 +442,9 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
                 @Right.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnRight;
                 @Right.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnRight;
                 @Right.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnRight;
+                @ExitMenu.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnExitMenu;
+                @ExitMenu.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnExitMenu;
+                @ExitMenu.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnExitMenu;
             }
             m_Wrapper.m_MenuActionsCallbackInterface = instance;
             if (instance != null)
@@ -408,6 +461,9 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
                 @Right.started += instance.OnRight;
                 @Right.performed += instance.OnRight;
                 @Right.canceled += instance.OnRight;
+                @ExitMenu.started += instance.OnExitMenu;
+                @ExitMenu.performed += instance.OnExitMenu;
+                @ExitMenu.canceled += instance.OnExitMenu;
             }
         }
     }
@@ -420,6 +476,7 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnGameMenu(InputAction.CallbackContext context);
     }
     public interface IMenuActions
     {
@@ -427,5 +484,6 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
         void OnDown(InputAction.CallbackContext context);
         void OnLeft(InputAction.CallbackContext context);
         void OnRight(InputAction.CallbackContext context);
+        void OnExitMenu(InputAction.CallbackContext context);
     }
 }

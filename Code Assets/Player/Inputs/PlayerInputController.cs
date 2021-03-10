@@ -7,14 +7,15 @@ public class PlayerInputController {
     private Input_AButton _InputEventAButton;
     private Input_BButton _InputEventBButton;
     private Input_XButton _InputEventXButton;
+    private Input_StartButton _InputEventStartButton;
 
-    public PlayerInputController(PlayerStateController playerProxies, PlayerPhysicsController physicsController, PlayerCameraController cameraController) {
+    public PlayerInputController(PlayerStateController playerProxies, PlayerPhysicsController physicsController, PlayerCameraController cameraController, PlayerUIController uiController) {
         _InputDeviceController = new PlayerInputDeviceController();
-        InitializeInputEvent(playerProxies, cameraController);
+        InitializeInputEvent(playerProxies, cameraController, uiController);
         SetupObservers(physicsController, cameraController);
     }
 
-    private void InitializeInputEvent(PlayerStateController playerProxies, PlayerCameraController cameraController) {
+    private void InitializeInputEvent(PlayerStateController playerProxies, PlayerCameraController cameraController, PlayerUIController uiController) {
         /**
           * @desc Initialize the input events and assign them to the _InputDeviceController so that once an button/analog is updated the appropriate funtions are called
         */
@@ -23,7 +24,9 @@ public class PlayerInputController {
         _InputEventAButton = new Input_AButton();
         _InputEventBButton = new Input_BButton(playerProxies.GetCrouchProxy());
         _InputEventXButton = new Input_XButton();
+        _InputEventStartButton = new Input_StartButton(uiController, this);
 
+        #region Gameplay input functionality setup
         //Walk input events
         _InputDeviceController.Gameplay.Walk.started += ctx => _InputEventLeftAnalog.GamePlay_InputStartWalk(ctx.ReadValue<Vector2>());
         _InputDeviceController.Gameplay.Walk.performed += ctx => _InputEventLeftAnalog.GamePlay_InputUpdateWalk(ctx.ReadValue<Vector2>());
@@ -49,6 +52,14 @@ public class PlayerInputController {
         //Interact input events (Pick up items, start quest, reload weapons, and open chests)
         _InputDeviceController.Gameplay.Interact.started += ctx => _InputEventXButton.GamePlay_InputStart();
         _InputDeviceController.Gameplay.Interact.canceled += ctx => _InputEventXButton.GamePlay_InputEnd();
+
+        //Brings up the game menu and disables the player's HUD
+        _InputDeviceController.Gameplay.GameMenu.started += ctx => _InputEventStartButton.GamePlay_InputStart();
+        #endregion
+        #region Menu input functionality setup
+        //Closes the game menu and enables the player's HUD
+        _InputDeviceController.Menu.ExitMenu.started += ctx => _InputEventStartButton.Menu_InputStart();
+        #endregion
     }
 
     private void SetupObservers(PlayerPhysicsController physicsController, PlayerCameraController cameraController) {

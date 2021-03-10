@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UnityHUDController : IUnityUIController {
+public class UnityHUDFunctionality {
     private GameObject _PlayerHUD;
     private Slider _HealthBarSlider;
     private Slider _StaminaSlider;
 
-    public UnityHUDController(GameObject canvasObject) {
+    public UnityHUDFunctionality(GameObject canvasObject) {
         _PlayerHUD = canvasObject.transform.Find("Player HUD").gameObject;
         _HealthBarSlider = _PlayerHUD.transform.Find("Health Bar").GetComponent<Slider>();
         _StaminaSlider = _PlayerHUD.transform.Find("Stamina Bar").GetComponent<Slider>();
@@ -30,7 +30,7 @@ public class UnityHUDController : IUnityUIController {
 
     public void UIDisplayOn() {
         /**
-          * @desc Re-enable the player's HUD display and script functionality
+          * @desc Enable the player's HUD display and script functionality
         */
         _PlayerHUD.SetActive(true);
     }

@@ -52,6 +52,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Game Menu",
+                    "type": "Button",
+                    "id": "1acc2e1f-57ad-475c-b1a6-d210ed6a82cb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -120,6 +128,17 @@
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fd42aeba-85bd-4e2f-bd20-986627b7ee95",
+                    "path": "<XInputController>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Game Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -155,6 +174,14 @@
                     "name": "Right",
                     "type": "Button",
                     "id": "f727b382-ae92-484e-83ac-1b48ebe89589",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Exit Menu",
+                    "type": "Button",
+                    "id": "f7573c47-aac2-4155-99ad-1e09b1be56d1",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -202,6 +229,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9c1d62c6-d94c-4f62-896f-5ef2c9701b2c",
+                    "path": "<XInputController>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Exit Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -5,8 +5,8 @@ public class PlayerStatsController {
     public Stats_Agility GetAgilityStats() { return _AgilityStats; }
 
     public PlayerStatsController(PlayerUIController uiController) {
-        _AgilityStats = new Stats_Agility(uiController.GetHudControllerPlayer());
-        _VitalityStats = new Stats_Vitality(uiController.GetHudControllerPlayer());
+        _AgilityStats = new Stats_Agility(uiController.GetHUDUIPlayer());
+        _VitalityStats = new Stats_Vitality(uiController.GetHUDUIPlayer());
     }
 
     public void AutoStatRecovery() {

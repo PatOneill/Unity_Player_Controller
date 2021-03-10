@@ -1,4 +1,4 @@
-public interface IUnityUIController {
+public interface IPlayerUIController {
     void UIDisplayOn();
     void UIDisplayOff();
 }
