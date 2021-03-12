@@ -1,17 +1,17 @@
-public class Input_StartButton {
+public class Input_GameMenu {
     private PlayerUIController _UIControllerPlayer;
     private PlayerInputController _InputControllerPlayer;
 
-    public Input_StartButton(PlayerUIController uiController, PlayerInputController inputController) {
-        _UIControllerPlayer = uiController;
+    public Input_GameMenu(PlayerInputController inputController, PlayerUIController uiController) {
         _InputControllerPlayer = inputController;
+        _UIControllerPlayer = uiController;
     }
 
-    public void GamePlay_InputStart() {
+    public void Gameplay_InputStart() {
         /**
           * @desc Info the player UI controller that a new UI element needs to be displayed
         */
-        _UIControllerPlayer.CurrentActiveDisplay.DisplayGameMenu();
+        _UIControllerPlayer.CurrentUIDisplay.TransitionToGameMenuUI();
         _InputControllerPlayer.StartMenuInputController(); //Change out the callback functions from gameplay inputs to menu inputs
     }
 
@@ -19,7 +19,7 @@ public class Input_StartButton {
         /**
           * @desc Info the player UI controller that a new UI element needs to be displayed
         */
-        _UIControllerPlayer.CurrentActiveDisplay.DisplayGameMenu();
+        _UIControllerPlayer.CurrentUIDisplay.TransitionToGameMenuUI();
         _InputControllerPlayer.StartGamePlayInuptController(); //Change out the callback functions from menu inputs to gameplay inputs
     }
 }

@@ -1,18 +1,17 @@
-public class Input_XButton {
-   
-    public Input_XButton() {
+public class Input_Jump {
+    public Input_Jump() {
 
     }
 
-    public void GamePlay_InputStart() {
+    public void InputStart() {
         throw new System.NotImplementedException();
     }
 
-    public void GamePlay_InputUpdate() {
+    public void InputUpdate() {
         throw new System.NotImplementedException();
     }
 
-    public void GamePlay_InputEnd() {
+    public void InputEnd() {
         throw new System.NotImplementedException();
     }
 }

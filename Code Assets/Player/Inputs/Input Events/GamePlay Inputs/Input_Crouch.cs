@@ -1,18 +1,18 @@
-public class Input_BButton {
+public class Input_Crouch {
     private IInputProxies _CrouchProxy;
 
-    public Input_BButton(IInputProxies crouchProxy) {
+    public Input_Crouch(IInputProxies crouchProxy) {
         _CrouchProxy = crouchProxy;
     }
 
-    public void GamePlay_InputStart() {
+    public void InputStart() {
         /**
           * @desc Inform the crouch proxy that the B button is pressed down
         */
         _CrouchProxy.InputActive();
     }
 
-    public void GamePlay_InputEnd() {
+    public void InputEnd() {
         /**
           * @desc Inform the crouch proxy that the B button has been released
         */

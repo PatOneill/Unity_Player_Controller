@@ -156,7 +156,7 @@
                 },
                 {
                     "name": "Down",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "12149fe0-d7d2-4b8d-a7ce-c4020df973f1",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -164,7 +164,7 @@
                 },
                 {
                     "name": "Left",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "be7cb5fd-5f49-4265-8ea9-e3a2045fc15b",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -172,7 +172,7 @@
                 },
                 {
                     "name": "Right",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "f727b382-ae92-484e-83ac-1b48ebe89589",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -185,6 +185,38 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Select",
+                    "type": "Button",
+                    "id": "efe50e8b-166b-4391-a6e9-06791761d077",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Back",
+                    "type": "Button",
+                    "id": "79f15270-84d0-42f4-ac10-97ce9a13cbf7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Sub Menu Navigation Left",
+                    "type": "Button",
+                    "id": "7f6a22c8-7100-42fa-b93d-40edf98bd963",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Sub Menu Navigation Right",
+                    "type": "Button",
+                    "id": "20ada3dd-718f-493a-a720-f2ce1ae5fb43",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -192,6 +224,17 @@
                     "name": "",
                     "id": "c3694fcc-936a-4861-aa23-0fb392d14004",
                     "path": "<XInputController>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "38b5b5b2-882e-4df5-9e62-fae260a36a19",
+                    "path": "<XInputController>/leftStick/up",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -212,8 +255,30 @@
                 },
                 {
                     "name": "",
+                    "id": "1f1348c4-51fc-4865-855f-eadfdadeb666",
+                    "path": "<XInputController>/leftStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Down",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "1863411a-0639-4248-8502-aaff2af6cfdf",
                     "path": "<XInputController>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6feab3e7-eae8-47c6-bb5c-dd9aab373090",
+                    "path": "<XInputController>/leftStick/left",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -234,12 +299,67 @@
                 },
                 {
                     "name": "",
+                    "id": "6000f896-490a-4bf5-9db6-007899cd9fff",
+                    "path": "<XInputController>/leftStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "9c1d62c6-d94c-4f62-896f-5ef2c9701b2c",
                     "path": "<XInputController>/start",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Exit Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a4c2e08a-4792-4d28-b765-895983f6c6cc",
+                    "path": "<XInputController>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fe85f22a-05b0-4ae6-9c51-0ca61e99186e",
+                    "path": "<XInputController>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Back",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6d6129cb-f56c-411e-a7f6-5024027cfafc",
+                    "path": "<XInputController>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sub Menu Navigation Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bb174df5-0bc7-40d3-a360-16213cb99200",
+                    "path": "<XInputController>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sub Menu Navigation Right",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -169,7 +169,7 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""Down"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""12149fe0-d7d2-4b8d-a7ce-c4020df973f1"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -177,7 +177,7 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""Left"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""be7cb5fd-5f49-4265-8ea9-e3a2045fc15b"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -185,7 +185,7 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""Right"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""f727b382-ae92-484e-83ac-1b48ebe89589"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -198,6 +198,38 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""efe50e8b-166b-4391-a6e9-06791761d077"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Back"",
+                    ""type"": ""Button"",
+                    ""id"": ""79f15270-84d0-42f4-ac10-97ce9a13cbf7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Sub Menu Navigation Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""7f6a22c8-7100-42fa-b93d-40edf98bd963"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Sub Menu Navigation Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""20ada3dd-718f-493a-a720-f2ce1ae5fb43"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -205,6 +237,17 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""c3694fcc-936a-4861-aa23-0fb392d14004"",
                     ""path"": ""<XInputController>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""38b5b5b2-882e-4df5-9e62-fae260a36a19"",
+                    ""path"": ""<XInputController>/leftStick/up"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -225,8 +268,30 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""1f1348c4-51fc-4865-855f-eadfdadeb666"",
+                    ""path"": ""<XInputController>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""1863411a-0639-4248-8502-aaff2af6cfdf"",
                     ""path"": ""<XInputController>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6feab3e7-eae8-47c6-bb5c-dd9aab373090"",
+                    ""path"": ""<XInputController>/leftStick/left"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -247,12 +312,67 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""6000f896-490a-4bf5-9db6-007899cd9fff"",
+                    ""path"": ""<XInputController>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""9c1d62c6-d94c-4f62-896f-5ef2c9701b2c"",
                     ""path"": ""<XInputController>/start"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Exit Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a4c2e08a-4792-4d28-b765-895983f6c6cc"",
+                    ""path"": ""<XInputController>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fe85f22a-05b0-4ae6-9c51-0ca61e99186e"",
+                    ""path"": ""<XInputController>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6d6129cb-f56c-411e-a7f6-5024027cfafc"",
+                    ""path"": ""<XInputController>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sub Menu Navigation Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bb174df5-0bc7-40d3-a360-16213cb99200"",
+                    ""path"": ""<XInputController>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sub Menu Navigation Right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -277,6 +397,10 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
         m_Menu_Left = m_Menu.FindAction("Left", throwIfNotFound: true);
         m_Menu_Right = m_Menu.FindAction("Right", throwIfNotFound: true);
         m_Menu_ExitMenu = m_Menu.FindAction("Exit Menu", throwIfNotFound: true);
+        m_Menu_Select = m_Menu.FindAction("Select", throwIfNotFound: true);
+        m_Menu_Back = m_Menu.FindAction("Back", throwIfNotFound: true);
+        m_Menu_SubMenuNavigationLeft = m_Menu.FindAction("Sub Menu Navigation Left", throwIfNotFound: true);
+        m_Menu_SubMenuNavigationRight = m_Menu.FindAction("Sub Menu Navigation Right", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -412,6 +536,10 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
     private readonly InputAction m_Menu_Left;
     private readonly InputAction m_Menu_Right;
     private readonly InputAction m_Menu_ExitMenu;
+    private readonly InputAction m_Menu_Select;
+    private readonly InputAction m_Menu_Back;
+    private readonly InputAction m_Menu_SubMenuNavigationLeft;
+    private readonly InputAction m_Menu_SubMenuNavigationRight;
     public struct MenuActions
     {
         private @PlayerInputDeviceController m_Wrapper;
@@ -421,6 +549,10 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
         public InputAction @Left => m_Wrapper.m_Menu_Left;
         public InputAction @Right => m_Wrapper.m_Menu_Right;
         public InputAction @ExitMenu => m_Wrapper.m_Menu_ExitMenu;
+        public InputAction @Select => m_Wrapper.m_Menu_Select;
+        public InputAction @Back => m_Wrapper.m_Menu_Back;
+        public InputAction @SubMenuNavigationLeft => m_Wrapper.m_Menu_SubMenuNavigationLeft;
+        public InputAction @SubMenuNavigationRight => m_Wrapper.m_Menu_SubMenuNavigationRight;
         public InputActionMap Get() { return m_Wrapper.m_Menu; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -445,6 +577,18 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
                 @ExitMenu.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnExitMenu;
                 @ExitMenu.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnExitMenu;
                 @ExitMenu.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnExitMenu;
+                @Select.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnSelect;
+                @Select.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnSelect;
+                @Select.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnSelect;
+                @Back.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnBack;
+                @Back.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnBack;
+                @Back.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnBack;
+                @SubMenuNavigationLeft.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnSubMenuNavigationLeft;
+                @SubMenuNavigationLeft.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnSubMenuNavigationLeft;
+                @SubMenuNavigationLeft.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnSubMenuNavigationLeft;
+                @SubMenuNavigationRight.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnSubMenuNavigationRight;
+                @SubMenuNavigationRight.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnSubMenuNavigationRight;
+                @SubMenuNavigationRight.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnSubMenuNavigationRight;
             }
             m_Wrapper.m_MenuActionsCallbackInterface = instance;
             if (instance != null)
@@ -464,6 +608,18 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
                 @ExitMenu.started += instance.OnExitMenu;
                 @ExitMenu.performed += instance.OnExitMenu;
                 @ExitMenu.canceled += instance.OnExitMenu;
+                @Select.started += instance.OnSelect;
+                @Select.performed += instance.OnSelect;
+                @Select.canceled += instance.OnSelect;
+                @Back.started += instance.OnBack;
+                @Back.performed += instance.OnBack;
+                @Back.canceled += instance.OnBack;
+                @SubMenuNavigationLeft.started += instance.OnSubMenuNavigationLeft;
+                @SubMenuNavigationLeft.performed += instance.OnSubMenuNavigationLeft;
+                @SubMenuNavigationLeft.canceled += instance.OnSubMenuNavigationLeft;
+                @SubMenuNavigationRight.started += instance.OnSubMenuNavigationRight;
+                @SubMenuNavigationRight.performed += instance.OnSubMenuNavigationRight;
+                @SubMenuNavigationRight.canceled += instance.OnSubMenuNavigationRight;
             }
         }
     }
@@ -485,5 +641,9 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
         void OnLeft(InputAction.CallbackContext context);
         void OnRight(InputAction.CallbackContext context);
         void OnExitMenu(InputAction.CallbackContext context);
+        void OnSelect(InputAction.CallbackContext context);
+        void OnBack(InputAction.CallbackContext context);
+        void OnSubMenuNavigationLeft(InputAction.CallbackContext context);
+        void OnSubMenuNavigationRight(InputAction.CallbackContext context);
     }
 }

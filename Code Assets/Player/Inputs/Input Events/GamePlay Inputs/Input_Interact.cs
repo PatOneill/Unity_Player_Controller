@@ -1,18 +1,18 @@
-public class Input_AButton {
+public class Input_Interact {
 
-    public Input_AButton() {
+    public Input_Interact() {
 
     }
 
-    public void GamePlay_InputStart() {
+    public void InputStart() {
         throw new System.NotImplementedException();
     }
 
-    public void GamePlay_InputUpdate() {
+    public void InputUpdate() {
         throw new System.NotImplementedException();
     }
 
-    public void GamePlay_InputEnd() {
+    public void InputEnd() {
         throw new System.NotImplementedException();
     }
 }

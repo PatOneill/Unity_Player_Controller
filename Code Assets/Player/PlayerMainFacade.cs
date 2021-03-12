@@ -10,8 +10,8 @@ public class PlayerMainFacade {
     private PlayerAnimationController _AnimationControllerPlayer;
     private PlayerUIController _UIControllerPlayer;
 
-    public PlayerMainFacade(Rigidbody playerPhysicsBody, Animator playerAnimator, Camera playerCamera, UnityUIFunctionalityController unityUI) {
-        _UIControllerPlayer = new PlayerUIController(unityUI);
+    public PlayerMainFacade(Rigidbody playerPhysicsBody, Animator playerAnimator, Camera playerCamera, GameObject playerUI) {
+        _UIControllerPlayer = new PlayerUIController(playerUI);
         _StatsControllerPlayer = new PlayerStatsController(_UIControllerPlayer);
         _CameraControllerPlayer = new PlayerCameraController(playerCamera, playerPhysicsBody);
         _PhysicsControllerPlayer = new PlayerPhysicsController(playerPhysicsBody);
@@ -23,7 +23,7 @@ public class PlayerMainFacade {
     }
 
     public void FacadeStart() {
-        _UIControllerPlayer.SetUIElements();
+        return;
     }
 
     public void FacadeFixedUpdate() {
