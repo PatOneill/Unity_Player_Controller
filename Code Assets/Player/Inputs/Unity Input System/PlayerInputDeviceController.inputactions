@@ -187,7 +187,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Select",
+                    "name": "Submit",
                     "type": "Button",
                     "id": "efe50e8b-166b-4391-a6e9-06791761d077",
                     "expectedControlType": "Button",
@@ -326,7 +326,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Select",
+                    "action": "Submit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

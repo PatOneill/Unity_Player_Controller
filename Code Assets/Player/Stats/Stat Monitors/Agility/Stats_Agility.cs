@@ -9,7 +9,10 @@ public class Stats_Agility {
     private Stat_Walk _WalkStat;
     private Stat_Sprint _SprintStat;
     private Stat_CrouchWalk _CrouchWalkStat;
-    private UI_HudFunctionality _HudFunctionality; 
+    private UI_HudFunctionality _HudFunctionality;
+    private Mediator_Proxies _ProxiesMediator;
+
+    public Mediator_Proxies ProxiesMediator { set => _ProxiesMediator = value; }
 
     public Stat_Walk GetWalkStat() { return _WalkStat; }
     public Stat_Sprint GetSprintStat() { return _SprintStat; }
@@ -21,10 +24,18 @@ public class Stats_Agility {
         _StaminaRecoveryAmount = 0.05f;
         _StaminaRecoveryTime = 8.0f;
         _TimeSinceLastDecreaseInStamina = 0.0f;
+        _ProxiesMediator = null;
         _WalkStat = new Stat_Walk();
         _SprintStat = new Stat_Sprint(this);
         _CrouchWalkStat = new Stat_CrouchWalk();
         _HudFunctionality = uiController.GetHudControllerUI().GetHudFunctionalityUI();
+    }
+
+    public void OnStart() {
+        /**
+         * @desc Called before the first update, this method sets up player's stat class's fields to interact with mediators if needed
+        */
+        _SprintStat.ProxiesMediator = _ProxiesMediator;
     }
 
     public bool IsThereEnoughStamina(float cost) {
@@ -39,14 +50,21 @@ public class Stats_Agility {
         }
     }
 
-    public void LowerStamina(float decayValue) {
+    public bool LowerStamina(float decayValue) {
         /**
          * @desc Lower the player's current stamina value when the player performs an action that costs stamina 
          * @parm float $decayValue - The cost in stamina for a particular action
         */
-        _CurrentStamina -= decayValue;
-        _HudFunctionality.DecreaseStaminaBar(_CurrentStamina / _MaxStamina);
-        _TimeSinceLastDecreaseInStamina = 0.0f; //Everytime the player performs an action that causes the total stamina to fall, reset the recover time for stamina
+        float tempStamina = _CurrentStamina - decayValue;
+        if (tempStamina < 0.0f) {
+            return false;
+        } else {
+            _CurrentStamina = tempStamina;
+            _HudFunctionality.DecreaseStaminaBar(_CurrentStamina / _MaxStamina);
+            _TimeSinceLastDecreaseInStamina = 0.0f; //Everytime the player performs an action that causes the total stamina to fall, reset the recover time for stamina
+            return true;
+        }
+
     }
 
     public void StaminaRecoverOverTime() {

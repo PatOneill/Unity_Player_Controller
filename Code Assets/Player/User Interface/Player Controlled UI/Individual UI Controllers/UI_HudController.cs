@@ -8,7 +8,6 @@ public class UI_HudController : AUIController {
         _UnityUIDisplay = canvasObject.transform.Find("Player HUD").gameObject;
         _UIControllerPlayer = uiController;
         _HudFunctionalityUI = new UI_HudFunctionality(_UnityUIDisplay);
-        _UINavigationCommands = new UI_HudNavigation(_HudFunctionalityUI);
     }
 
     public UI_HudFunctionality GetHudFunctionalityUI() {

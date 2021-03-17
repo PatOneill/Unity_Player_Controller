@@ -23,7 +23,7 @@ public class PlayerMainFacade {
     }
 
     public void FacadeStart() {
-        return;
+        _StatsControllerPlayer.OnStart(_StateControllerPlayer.ProxyMediator);
     }
 
     public void FacadeFixedUpdate() {

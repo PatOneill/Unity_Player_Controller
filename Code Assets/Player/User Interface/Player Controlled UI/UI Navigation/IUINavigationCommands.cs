@@ -3,4 +3,5 @@ public interface IUINavigationCommands {
     void NavigateDown();
     void NavigateLeft();
     void NavigateRight();
+    void NavigateSubmit();
 }

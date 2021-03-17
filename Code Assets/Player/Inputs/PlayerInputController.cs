@@ -18,6 +18,7 @@ public class PlayerInputController {
     private Input_NavigateDown _InputNavigateDown;
     private Input_NavigateLeft _InputNavigateLeft;
     private Input_NavigateRight _InputNavigateRight;
+    private Input_NavigateSubmit _InputNavigateSubmit;
     #endregion
     public PlayerInputController(PlayerStateController playerProxies, PlayerPhysicsController physicsController, PlayerCameraController cameraController, PlayerUIController uiController) {
         _InputDeviceController = new PlayerInputDeviceController();
@@ -40,6 +41,7 @@ public class PlayerInputController {
         _InputNavigateDown = new Input_NavigateDown(uiController);
         _InputNavigateLeft = new Input_NavigateLeft(uiController);
         _InputNavigateRight = new Input_NavigateRight(uiController);
+        _InputNavigateSubmit = new Input_NavigateSubmit(uiController);
 
         #region Gameplay input functionality setup
         //Walk input events
@@ -88,7 +90,9 @@ public class PlayerInputController {
         _InputDeviceController.Menu.Right.started += ctx => _InputNavigateLeft.InputStart(ctx.ReadValue<float>());
         _InputDeviceController.Menu.Right.canceled += ctx => _InputNavigateLeft.InputEnd();
 
-        //Click UI element
+        //Submit a request to an UI element
+        _InputDeviceController.Menu.Submit.started += ctx => _InputNavigateSubmit.InputStart();
+        _InputDeviceController.Menu.Submit.canceled += ctx => _InputNavigateSubmit.InputEnd();
 
         //Close any active UI element and bring player's UI back to the HUD element
         _InputDeviceController.Menu.ExitMenu.started += ctx => _InputGameMenu.Menu_InputStart();

@@ -15,6 +15,7 @@ public class Proxy_Crouch : IDynamicProxies, IInputProxies, IProxyDependent {
         /**
          * @desc The input for this proxy is active 
         */
+        
         _InputActive = true;
         if (_IsToggled) { //Check to see if the input is set to toggoled
             _ToggleProxyActive = !_ToggleProxyActive; //Monitor whether the proxy's state is active or inactive

@@ -18,10 +18,12 @@ public class Event_CrouchWalk : IEvent {
     }
 
     public void CurrentEventAnimationStart() {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
+        return;
     }
 
     public void CurrentEventAnimationStop() {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
+        return;
     }
 }

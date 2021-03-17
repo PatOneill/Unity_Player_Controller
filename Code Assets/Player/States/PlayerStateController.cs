@@ -27,6 +27,8 @@ public class PlayerStateController {
     #endregion
     #endregion
 
+    public Mediator_Proxies ProxyMediator { get => _ProxyMediator; }
+
     public PlayerStateController(PlayerEventController eventController, PlayerStatsController statsController) {
         _ProxyMediator = new Mediator_Proxies();
         _EventControllerPlayer = eventController;

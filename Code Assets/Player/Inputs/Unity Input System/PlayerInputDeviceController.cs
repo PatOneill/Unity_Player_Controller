@@ -200,7 +200,7 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Select"",
+                    ""name"": ""Submit"",
                     ""type"": ""Button"",
                     ""id"": ""efe50e8b-166b-4391-a6e9-06791761d077"",
                     ""expectedControlType"": ""Button"",
@@ -339,7 +339,7 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Select"",
+                    ""action"": ""Submit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -397,7 +397,7 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
         m_Menu_Left = m_Menu.FindAction("Left", throwIfNotFound: true);
         m_Menu_Right = m_Menu.FindAction("Right", throwIfNotFound: true);
         m_Menu_ExitMenu = m_Menu.FindAction("Exit Menu", throwIfNotFound: true);
-        m_Menu_Select = m_Menu.FindAction("Select", throwIfNotFound: true);
+        m_Menu_Submit = m_Menu.FindAction("Submit", throwIfNotFound: true);
         m_Menu_Back = m_Menu.FindAction("Back", throwIfNotFound: true);
         m_Menu_SubMenuNavigationLeft = m_Menu.FindAction("Sub Menu Navigation Left", throwIfNotFound: true);
         m_Menu_SubMenuNavigationRight = m_Menu.FindAction("Sub Menu Navigation Right", throwIfNotFound: true);
@@ -536,7 +536,7 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
     private readonly InputAction m_Menu_Left;
     private readonly InputAction m_Menu_Right;
     private readonly InputAction m_Menu_ExitMenu;
-    private readonly InputAction m_Menu_Select;
+    private readonly InputAction m_Menu_Submit;
     private readonly InputAction m_Menu_Back;
     private readonly InputAction m_Menu_SubMenuNavigationLeft;
     private readonly InputAction m_Menu_SubMenuNavigationRight;
@@ -549,7 +549,7 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
         public InputAction @Left => m_Wrapper.m_Menu_Left;
         public InputAction @Right => m_Wrapper.m_Menu_Right;
         public InputAction @ExitMenu => m_Wrapper.m_Menu_ExitMenu;
-        public InputAction @Select => m_Wrapper.m_Menu_Select;
+        public InputAction @Submit => m_Wrapper.m_Menu_Submit;
         public InputAction @Back => m_Wrapper.m_Menu_Back;
         public InputAction @SubMenuNavigationLeft => m_Wrapper.m_Menu_SubMenuNavigationLeft;
         public InputAction @SubMenuNavigationRight => m_Wrapper.m_Menu_SubMenuNavigationRight;
@@ -577,9 +577,9 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
                 @ExitMenu.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnExitMenu;
                 @ExitMenu.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnExitMenu;
                 @ExitMenu.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnExitMenu;
-                @Select.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnSelect;
-                @Select.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnSelect;
-                @Select.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnSelect;
+                @Submit.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnSubmit;
+                @Submit.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnSubmit;
+                @Submit.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnSubmit;
                 @Back.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnBack;
                 @Back.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnBack;
                 @Back.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnBack;
@@ -608,9 +608,9 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
                 @ExitMenu.started += instance.OnExitMenu;
                 @ExitMenu.performed += instance.OnExitMenu;
                 @ExitMenu.canceled += instance.OnExitMenu;
-                @Select.started += instance.OnSelect;
-                @Select.performed += instance.OnSelect;
-                @Select.canceled += instance.OnSelect;
+                @Submit.started += instance.OnSubmit;
+                @Submit.performed += instance.OnSubmit;
+                @Submit.canceled += instance.OnSubmit;
                 @Back.started += instance.OnBack;
                 @Back.performed += instance.OnBack;
                 @Back.canceled += instance.OnBack;
@@ -641,7 +641,7 @@ public class @PlayerInputDeviceController : IInputActionCollection, IDisposable
         void OnLeft(InputAction.CallbackContext context);
         void OnRight(InputAction.CallbackContext context);
         void OnExitMenu(InputAction.CallbackContext context);
-        void OnSelect(InputAction.CallbackContext context);
+        void OnSubmit(InputAction.CallbackContext context);
         void OnBack(InputAction.CallbackContext context);
         void OnSubMenuNavigationLeft(InputAction.CallbackContext context);
         void OnSubMenuNavigationRight(InputAction.CallbackContext context);

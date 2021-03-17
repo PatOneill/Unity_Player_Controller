@@ -57,6 +57,7 @@ public class Proxy_Sprint : IDynamicProxies, IInputProxies, IProxyDependent {
         /**
           * @desc Tell the current state that it should transition to a sprinting state if such a path existed in the state machine
         */
+        _ProxyMediator.KillCrouchProxy();  //Send a cancel request to the crouch proxy when the player wants to start sprinting
         _StateController.GetActiveState().Sprint();
     }
 
@@ -64,7 +65,7 @@ public class Proxy_Sprint : IDynamicProxies, IInputProxies, IProxyDependent {
         /**
           * @desc Tell the current state that it should transition out of a sprinting state if such a path existed in the state machine 
         */
-        _ProxyMediator.KillCrouchProxy();  //Send a cancel request to the crouch proxy when the player wants to start sprinting
+        _ProxyMediator.KillCrouchProxy();  //In case the player attempted to crouch while sprint, send another cancel request to the crouch proxy to ensure it remains in the correct state at all times 
         _StateController.GetActiveState().CancelSprint();
     }
 
@@ -74,6 +75,8 @@ public class Proxy_Sprint : IDynamicProxies, IInputProxies, IProxyDependent {
         */
         if (_ToggleProxyActive) { //Check to see if the user is toggle sprinting before setting the proxy to be inactive
             _ToggleProxyActive = false;
+            RetractRequest();
+            _ProxyMediator.KillCrouchProxy(); //In case the player attempted to crouch while sprint, and the sprint proxy is stopped externally, send another cancel request to the crouch proxy to ensure it remains in the correct state at all times 
         }
     }
 

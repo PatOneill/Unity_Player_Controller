@@ -1,8 +1,7 @@
 using UnityEngine;
 
-public abstract class AUIController {
+public abstract class AUIController : IUITransitionCommands, IUIControllerNavigationCommands {
     protected GameObject _UnityUIDisplay;
-    protected IUINavigationCommands _UINavigationCommands;
 
     public virtual void TransitionToHudUI() {
         return;
@@ -12,21 +11,29 @@ public abstract class AUIController {
         return;
     }
 
-    public virtual IUINavigationCommands GetUINavigation() {
-        return _UINavigationCommands;
-    }
-
-    public void UIDisplayOn() {
+    public virtual void UIDisplayOn() {
         /**
           * @desc Enables a unity UI gameobject
         */
         _UnityUIDisplay.SetActive(true);
     }
 
-    public void UIDisplayOff() {
+    public virtual void UIDisplayOff() {
         /**
           * @desc Disables a unity UI gameobject
         */
         _UnityUIDisplay.SetActive(false);
+    }
+
+    public virtual void NavigateVertically(int direction) {
+        return;
+    }
+
+    public virtual void NavigateHorizontally(int direction) {
+        return;
+    }
+
+    public virtual void NavigateSelectablePressed() {
+        return;
     }
 }
