@@ -1,10 +1,12 @@
 using UnityEngine;
 
-public class PlayerMain : MonoBehaviour {
+public class PlayerMain : MonoBehaviour
+{
     private PlayerMainFacade _MainFacadePlayer;
 
     private void Awake() {
-        _MainFacadePlayer = new PlayerMainFacade(this.gameObject.GetComponent<Rigidbody>(), this.gameObject.GetComponent<Animator>(), this.gameObject.GetComponentInChildren<Camera>(), this.gameObject.transform.Find("Player User Interface").gameObject);
+        GameObject userInterface = this.gameObject.transform.Find("Player User Interface").gameObject;
+        _MainFacadePlayer = new PlayerMainFacade(userInterface);
     }
 
     private void Start() {

@@ -1,40 +1,57 @@
 using UnityEngine;
 
 public class PlayerMainFacade {
-    private PlayerInputController _InputControllerPlayer;
-    private PlayerStateController _StateControllerPlayer;
-    private PlayerEventController _EventControllerPlayer;
-    private PlayerStatsController _StatsControllerPlayer;
-    private PlayerPhysicsController _PhysicsControllerPlayer;
-    private PlayerCameraController _CameraControllerPlayer;
-    private PlayerAnimationController _AnimationControllerPlayer;
-    private PlayerUIController _UIControllerPlayer;
+    private PlayerInputs _PlayerInputDevice;
+    private Input_SwapperController _InputSwapperController;
+    private Inputs_GameplayController _InputsGameplayController;
+    private Inputs_GameplayAndUIController _InputsGameplayAndUIController;
+    private Inputs_UserInterfaceController _InputsUserInterfaceController;
+    private UI_InputHandler _UIInputHandler;
+    private UI_DisplayTransitions _UIDisplayTransitions;
 
-    public PlayerMainFacade(Rigidbody playerPhysicsBody, Animator playerAnimator, Camera playerCamera, GameObject playerUI) {
-        _UIControllerPlayer = new PlayerUIController(playerUI);
-        _StatsControllerPlayer = new PlayerStatsController(_UIControllerPlayer);
-        _CameraControllerPlayer = new PlayerCameraController(playerCamera, playerPhysicsBody);
-        _PhysicsControllerPlayer = new PlayerPhysicsController(playerPhysicsBody);
-        _AnimationControllerPlayer = new PlayerAnimationController(playerAnimator, _PhysicsControllerPlayer);
-        _EventControllerPlayer = new PlayerEventController(_StatsControllerPlayer, _PhysicsControllerPlayer, _AnimationControllerPlayer);
-        _StateControllerPlayer = new PlayerStateController(_EventControllerPlayer, _StatsControllerPlayer);
-        _InputControllerPlayer = new PlayerInputController(_StateControllerPlayer, _PhysicsControllerPlayer, _CameraControllerPlayer, _UIControllerPlayer);
-        _InputControllerPlayer.StartGamePlayInuptController(); //Initialize input capture for gameplay as soon as the player spawns in the level
+    public PlayerMainFacade(GameObject userInterface) {
+        _PlayerInputDevice = new PlayerInputs();
+        _InputSwapperController = new Input_SwapperController(_PlayerInputDevice);
+        _InputsGameplayController = new Inputs_GameplayController(_PlayerInputDevice);
+        _InputsGameplayAndUIController = new Inputs_GameplayAndUIController(_PlayerInputDevice);
+        _InputsUserInterfaceController = new Inputs_UserInterfaceController(_PlayerInputDevice);
+
+        _UIInputHandler = new UI_InputHandler();
+        _UIDisplayTransitions = new UI_DisplayTransitions(userInterface, _InputSwapperController.GetMediator, _UIInputHandler);
+
+        _InputsGameplayAndUIController.GetInputGameMenu.SetUITransitionGameMenuCommand = _UIInputHandler.GetGameMenuTransitionCommand;
+        _InputsGameplayAndUIController.GetInputPlayMenu.SetUITransitionPlayerMenuCommand = _UIInputHandler.GetPlayerMenuTransitionCommand;
+        _InputsUserInterfaceController.GetInputBack.SetUITransitionBackCommand = _UIInputHandler.GetBackTransitionCommand;
+
+        _InputsUserInterfaceController.GetInputUp.SetUINavigationUpCommand = _UIInputHandler.GetUpCommand;
+        _InputsUserInterfaceController.GetInputDown.SetUINavigationDownCommand = _UIInputHandler.GetDownCommand;
+        _InputsUserInterfaceController.GetInputLeft.SetUINavigationLeftCommand = _UIInputHandler.GetLeftCommand;
+        _InputsUserInterfaceController.GetInputRight.SetUINavigationRightCommand = _UIInputHandler.GetRightCommand;
+
+        _InputsUserInterfaceController.GetInputSubmitTypeOne.SetSubmitTypeOneCommand = _UIInputHandler.GetSubmissionTypeOneCommand;
+        _InputsUserInterfaceController.GetInputSubmitTypeTwo.SetSubmitTypeTwoCommand = _UIInputHandler.GetSubmissonTypeTwoCommand;
+        _InputsUserInterfaceController.GetInputSubmitTypeThree.SetSubmitTypeThreeCommand = _UIInputHandler.GetSubmissionTypeThreeCommand;
+        _InputsUserInterfaceController.GetInputSubmitTypeFour.SetSubmitTypeFourCommand = _UIInputHandler.GetSubmissionTypeFourCommand;
+
+        _InputsUserInterfaceController.GetInputShiftSubWindowLeft.SetSubWindowShiftLeftCommand = _UIInputHandler.GetSubWindowShiftLeftCommand;
+        _InputsUserInterfaceController.GetInputShiftSubWindowRight.SetSubWindowShiftRightCommand = _UIInputHandler.GetSubWindowShiftRightCommand;
+
+        _InputSwapperController.ActivateOnlyGameplayActionMap(); //When the player gameobject fully loads in, the gameplay input action map will be monitoring the users inputs
     }
 
     public void FacadeStart() {
-        _StatsControllerPlayer.OnStart(_StateControllerPlayer.ProxyMediator);
+        
     }
 
     public void FacadeFixedUpdate() {
-        _EventControllerPlayer.ExecuteCurrentEvent();
+        
     }
 
     public void FacadeUpdate() {
-        _StatsControllerPlayer.AutoStatRecovery();
+        _UIInputHandler.RunNavigationCountDown();
     }
 
     public void FacadeLateUpdate() {
-        _CameraControllerPlayer.InputDrivenPlayerCameraMotion();
+        _InputSwapperController.CheckForSwapRequest();
     }
 }
